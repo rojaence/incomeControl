@@ -1,13 +1,43 @@
 <?php
 
-require_once 'index.php';
+namespace Database\PDO;
 
-$server = $_ENV['DB_HOST'];
-$database = $_ENV['DB_NAME'];
-$username = $_ENV['DB_USER'];
-$password = $_ENV['DB_PASS'];
+class Connection 
+{
+  private static $instance;
+  private $connection;
 
-$connection = new PDO("mysql:host=$server;dbname=$database", $username, $password);
+  private function __contruct()
+  {
+    $this->makeConnection();
+  }
 
-$setnames = $connection->prepare("SET NAMES 'utf8'");
-$setnames->execute();
+  public static function getInstance(): object
+  {
+    if(!self::$instance instanceof self)
+    {
+      self::$instance = new self();
+    }
+    return self::$instance;
+  }
+
+  private function makeConnection(): void
+  {
+    try
+    {
+      $conn = new \PDO("mysql:host={$_ENV['HOST']};dbname={$_ENV['NAME']}", $_ENV["USER"], $_ENV["PASS"]);
+      $setnames = $conn->prepare("SET NAMES 'utf8'");
+      $setnames->execute();
+      $this->connection = $conn;
+    }
+    catch(\PDOException $e)
+    {
+      die("Connection failed: {$e->getMessage()}");
+    }
+  }
+
+  public function getConnection(): object
+  {
+    return $this->connection;
+  }
+}
