@@ -3,6 +3,11 @@
   "description": "Projecto del curso de conexión de php con bases de datos",
   "type": "project",
   "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Database\\": "database"
+    }
+  },
   "authors": [
     {
       "name": "Ronny Endara",

@@ -1,30 +1,49 @@
 <?php
 
-require_once 'index.php';
+namespace Database\MySQLi;
 
-$server = $_ENV['DB_HOST'];
-$database = $_ENV['DB_NAME'];
-$username = $_ENV['DB_USER'];
-$password = $_ENV['DB_PASS'];
+class Connection
+{
+  private static $instance;
+  private $connection;
 
-// conexión de forma procedural
-// $mysqli = mysqli_connect($server, $database, $username, $password);
+  private function __construct()
+  {
+    $this->makeConnection();
+  }
 
-// conexión POO
-$mysqli = new mysqli($server, $username, $password, $database);
+  public static function getInstance(): object
+  {
+    if (!self::$instance instanceof self)
+    {
+      self::$instance = new self();
+    }
 
-// Comprobar conexión de forma procedural
-/* if (!$mysqli) {
-  die("FALLÓ LA CONEXIÓN: " . mysqli_connect_error());
-} */
+    return self::$instance;
+  }
 
-// Comprobar conexión POO
-if ($mysqli->connect_errno) {
-  die("FALLÓ LA CONEXIÓN: {$myqsli->connect_error()}");
+  private function makeConnection(): void
+  {
+    try
+    {
+      $conn = new \mysqli(
+        $_ENV["DB_HOST"], 
+        $_ENV["DB_USER"], 
+        $_ENV["DB_PASS"],
+        $_ENV["DB_NAME"]);
+      $setnames = $conn->prepare("SET NAMES 'utf8'");
+      $setnames->execute();
+
+      $this->connection = $conn;
+    } 
+    catch(\mysqli_sql_exception $e)
+    {
+      die("Connection failed: {$e->getMessage()}");
+    }
+  }
+
+  public function getConnection(): object
+  {
+    return $this->connection;
+  }
 }
-
-// ESTA LÍNEA ES PARA QUE CADA QUE SE REALICEN CONSULTAS SE PUEDA USAR CUALQUIER CARACTER
-$setnames = $mysqli->prepare("SET NAMES 'utf8'");
-$setnames->execute();
-
-// var_dump($setnames);
