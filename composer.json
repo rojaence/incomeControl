@@ -1,0 +1,15 @@
+{
+  "name": "rojaence/income-control",
+  "description": "Projecto del curso de conexión de php con bases de datos",
+  "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Ronny Endara",
+      "email": "rojaence@gmail.com"
+    }
+  ],
+  "require": {
+    "vlucas/phpdotenv": "^5.5"
+  }
+}
