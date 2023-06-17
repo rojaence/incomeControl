@@ -1,16 +1,28 @@
 <?php
 
-namespace App\Controllers;
+namespace App\COntrollers;
 
-class WithdrawalController
+abstract class BaseController
 {
+  protected $dbConnection;
+
+  public function __construct()
+  { 
+    // TODO: configurar la conexión a la base de datos
+    $this->dbConnection = "";
+  }
+
+  // Métodos de Controlador genéricos
+
   /**
    * Muestra una lista del recurso
   */
-  public function index()
-  {
+  abstract public function index();
 
-  }
+  /**
+   * Muestra un único recurso
+  */
+  abstract public function show();
 
   /**
    * Muestra un formulario para crear un nuevo recurso
@@ -28,13 +40,6 @@ class WithdrawalController
     
   }
 
-  /**
-   * Muestra un único recurso
-  */
-  public function show()
-  {
-    
-  }
 
   /**
    * Muestra el formulario para editar un único recurso
