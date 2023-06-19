@@ -1,6 +1,8 @@
 <?php
 
-namespace App\COntrollers;
+namespace App\Controllers;
+
+use Database\MySQLi\Connection;
 
 abstract class BaseController
 {
@@ -9,7 +11,8 @@ abstract class BaseController
   public function __construct()
   { 
     // TODO: configurar la conexión a la base de datos
-    $this->dbConnection = "";
+    $connection = Connection::getInstance()->getConnection();
+    $this->dbConnection = $connection;
   }
 
   // Métodos de Controlador genéricos
@@ -34,8 +37,9 @@ abstract class BaseController
 
   /**
    * Guarda un nuevo recurso en la base de datos
+   * @param $data;
   */
-  public function store()
+  public function store($data)
   {
     
   }
