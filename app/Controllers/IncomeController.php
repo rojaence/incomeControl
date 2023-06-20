@@ -9,7 +9,7 @@ class IncomeController
   */
   public function index()
   {
-
+    
   }
 
   /**

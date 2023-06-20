@@ -3,7 +3,9 @@
 require 'vendor/autoload.php';
 
 use App\Controllers\PaymentMethodController;
+use App\Controllers\TransactionTypeController;
 use App\Models\PaymentMethodModel;
+use App\Models\TransactionTypeModel;
 use Dotenv\Dotenv;
 
 $dotenv = Dotenv::createImmutable(__DIR__);
@@ -11,9 +13,19 @@ $dotenv->load();
 
 try {
   $payment_method_controller = new PaymentMethodController();  
-  $payment_method_controller->store(new PaymentMethodModel(name: "cash"));
-  echo "Registro exitoso";
+  $transaction_type_controller = new TransactionTypeController();
+
+  // $payment_method_controller->store(new PaymentMethodModel(name: "example"));
+
+  /* $transaction_type1 = new TransactionTypeModel(name:"retiro");
+  $transaction_type_controller->store($transaction_type1);
+  echo "El nuevo id para {$transaction_type1->getName()} es: {$transaction_type1->getId()}\n"; */
+
+  // Listar todos los elementos
+  $payment_method_controller->index();
+
+
 } catch(Exception $e)
 {
-  var_dump($e->getMessage());
+  var_dump($e);
 }

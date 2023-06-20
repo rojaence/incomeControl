@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use Database\MySQLi\Connection;
+use Database\PDO\Connection;
 
 abstract class BaseController
 {

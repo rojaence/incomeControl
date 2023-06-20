@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class PaymentMethodModel
+class TransactionTypeModel
 {
   protected ?int $id;
   protected string $name;

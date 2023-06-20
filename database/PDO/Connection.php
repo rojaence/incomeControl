@@ -7,7 +7,7 @@ class Connection
   private static $instance;
   private $connection;
 
-  private function __contruct()
+  private function __construct()
   {
     $this->makeConnection();
   }
@@ -25,7 +25,7 @@ class Connection
   {
     try
     {
-      $conn = new \PDO("mysql:host={$_ENV['HOST']};dbname={$_ENV['NAME']}", $_ENV["USER"], $_ENV["PASS"]);
+      $conn = new \PDO("mysql:host={$_ENV['DB_HOST']};dbname={$_ENV['DB_NAME']}", $_ENV['DB_USER'], $_ENV['DB_PASS']);
       $setnames = $conn->prepare("SET NAMES 'utf8'");
       $setnames->execute();
       $this->connection = $conn;
