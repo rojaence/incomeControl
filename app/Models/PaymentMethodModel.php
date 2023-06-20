@@ -8,7 +8,7 @@ class PaymentMethodModel
   protected string $name;
   protected string $description;
 
-  public function __construct(string $name, string $description, ?int $id = null)
+  public function __construct(string $name, string $description = "", ?int $id = null)
   {
     $this->name = $name;
     $this->description = $description;
