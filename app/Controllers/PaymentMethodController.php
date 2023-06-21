@@ -6,14 +6,27 @@ use App\Models\PaymentMethodModel;
 
 class PaymentMethodController extends BaseController
 {
-  public function index()
+  public function index(): array
   {
-        
+    $query = $this->dbConnection->prepare("SELECT * FROM payment_method");
+    $query->execute();
+
+    $paymentMethods = $query->fetchAll();
+    $paymentMethods = array_map(function ($paymentMethod) {
+      return new PaymentMethodModel(id: $paymentMethod['id'], name: $paymentMethod['name'], description: $paymentMethod['description'] );
+    }, $paymentMethods);
+    return $paymentMethods;
   }
 
-  public function show()
+  public function show($id): object
   {
+    $query = $this->dbConnection->prepare("SELECT * FROM payment_method WHERE id = :id");
+    $query->bindValue(':id', $id, \PDO::PARAM_INT);
+    $query->execute();
 
+    $result = $query->fetch();
+
+    return new PaymentMethodModel(id: $result['id'], name: $result['name'], description: $result['description']);
   }
 
   public function store($data)

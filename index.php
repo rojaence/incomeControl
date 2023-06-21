@@ -22,8 +22,18 @@ try {
   echo "El nuevo id para {$transaction_type1->getName()} es: {$transaction_type1->getId()}\n"; */
 
   // Listar todos los elementos
-  $payment_method_controller->index();
+  /* $paymentMethods = $payment_method_controller->index();
+  var_dump($paymentMethods); */
 
+  /* $val1 = $payment_method_controller->show(id: 1);
+  var_dump($val1); */
+
+  // Listar todos los elementos
+  $transactionTypes = $transaction_type_controller->index();
+  var_dump($transactionTypes);
+
+  $val1 = $transaction_type_controller->show(id: 1);
+  var_dump($val1);
 
 } catch(Exception $e)
 {

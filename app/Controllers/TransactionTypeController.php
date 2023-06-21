@@ -7,13 +7,24 @@ use App\Models\TransactionTypeModel;
 class TransactionTypeController extends BaseController
 {
   public function index()
-  {
+  {    
+    $query = $this->dbConnection->prepare("SELECT * FROM transaction_type");
+    $query->execute();
 
+    $transactionTypes = $query->fetchAll();
+    $transactionTypes = array_map(function ($transactionType) {
+      return new TransactionTypeModel(id: $transactionType['id'], name: $transactionType['name'], description: $transactionType['description'] );
+    }, $transactionTypes);
+    return $transactionTypes;
   }
 
-  public function show()
+  public function show($id)
   {
+    $query = $this->dbConnection->prepare("SELECT * FROM transaction_type WHERE id = :id");
+    $query->execute([ 'id' => $id ]);
 
+    $transactionType = $query->fetch();
+    return new TransactionTypeModel(id: $transactionType['id'], name: $transactionType['name'], description: $transactionType['description']);
   }
 
   public function store($data)

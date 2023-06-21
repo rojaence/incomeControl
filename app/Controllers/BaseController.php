@@ -10,7 +10,6 @@ abstract class BaseController
 
   public function __construct()
   { 
-    // TODO: configurar la conexión a la base de datos
     $connection = Connection::getInstance()->getConnection();
     $this->dbConnection = $connection;
   }
@@ -25,7 +24,7 @@ abstract class BaseController
   /**
    * Muestra un único recurso
   */
-  abstract public function show();
+  abstract public function show($id);
 
   /**
    * Muestra un formulario para crear un nuevo recurso
