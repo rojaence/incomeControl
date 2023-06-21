@@ -25,12 +25,16 @@ try {
   /* $paymentMethods = $payment_method_controller->index();
   var_dump($paymentMethods); */
 
+  // echo "\n-----------------\n";
+
   /* $val1 = $payment_method_controller->show(id: 1);
   var_dump($val1); */
 
   // Listar todos los elementos
   $transactionTypes = $transaction_type_controller->index();
   var_dump($transactionTypes);
+
+  echo "\n-----------------\n";
 
   $val1 = $transaction_type_controller->show(id: 1);
   var_dump($val1);

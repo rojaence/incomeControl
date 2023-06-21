@@ -74,4 +74,15 @@ class PaymentMethodModel
 
     return $this;
   }
+
+  public static function fromArray(array $data) {
+    if (isset($data['name'])) {
+        $name = $data['name'];
+        $description = $data['description'] ?? null;
+        $id = $data['id'] ?? null;
+        return new self($name, $description, $id);
+    } else {
+        throw new \InvalidArgumentException('El array no contiene los atributos requeridos.');
+    }
+  }
 }

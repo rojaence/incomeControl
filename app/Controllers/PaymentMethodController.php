@@ -13,7 +13,8 @@ class PaymentMethodController extends BaseController
 
     $paymentMethods = $query->fetchAll();
     $paymentMethods = array_map(function ($paymentMethod) {
-      return new PaymentMethodModel(id: $paymentMethod['id'], name: $paymentMethod['name'], description: $paymentMethod['description'] );
+      // return new PaymentMethodModel(id: $paymentMethod['id'], name: $paymentMethod['name'], description: $paymentMethod['description'] );
+      return PaymentMethodModel::fromArray($paymentMethod);
     }, $paymentMethods);
     return $paymentMethods;
   }
@@ -26,7 +27,9 @@ class PaymentMethodController extends BaseController
 
     $result = $query->fetch();
 
-    return new PaymentMethodModel(id: $result['id'], name: $result['name'], description: $result['description']);
+    return PaymentMethodModel::fromArray($result);
+
+    // return new PaymentMethodModel(id: $result['id'], name: $result['name'], description: $result['description']);
   }
 
   public function store($data)

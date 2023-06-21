@@ -10,11 +10,7 @@ class TransactionTypeController extends BaseController
   {    
     $query = $this->dbConnection->prepare("SELECT * FROM transaction_type");
     $query->execute();
-
-    $transactionTypes = $query->fetchAll();
-    $transactionTypes = array_map(function ($transactionType) {
-      return new TransactionTypeModel(id: $transactionType['id'], name: $transactionType['name'], description: $transactionType['description'] );
-    }, $transactionTypes);
+    $transactionTypes = $query->fetchAll(\PDO::FETCH_ASSOC);
     return $transactionTypes;
   }
 
@@ -22,8 +18,7 @@ class TransactionTypeController extends BaseController
   {
     $query = $this->dbConnection->prepare("SELECT * FROM transaction_type WHERE id = :id");
     $query->execute([ 'id' => $id ]);
-
-    $transactionType = $query->fetch();
+    $transactionType = $query->fetch(\PDO::FETCH_ASSOC);
     return new TransactionTypeModel(id: $transactionType['id'], name: $transactionType['name'], description: $transactionType['description']);
   }
 
