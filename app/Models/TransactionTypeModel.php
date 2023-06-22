@@ -78,7 +78,7 @@ class TransactionTypeModel
   public static function fromArray($data) {
     if (isset($data['name'])) {
         $name = $data['name'];
-        $description = $data['description'] ?? null;
+        $description = $data['description'] ?? '';
         $id = $data['id'] ?? null;
         return new self($name, $description, $id);
     } else {

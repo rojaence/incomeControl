@@ -11,9 +11,8 @@ class PaymentMethodController extends BaseController
     $query = $this->dbConnection->prepare("SELECT * FROM payment_method");
     $query->execute();
 
-    $paymentMethods = $query->fetchAll();
+    $paymentMethods = $query->fetchAll(\PDO::FETCH_ASSOC);
     $paymentMethods = array_map(function ($paymentMethod) {
-      // return new PaymentMethodModel(id: $paymentMethod['id'], name: $paymentMethod['name'], description: $paymentMethod['description'] );
       return PaymentMethodModel::fromArray($paymentMethod);
     }, $paymentMethods);
     return $paymentMethods;
@@ -25,7 +24,7 @@ class PaymentMethodController extends BaseController
     $query->bindValue(':id', $id, \PDO::PARAM_INT);
     $query->execute();
 
-    $result = $query->fetch();
+    $result = $query->fetch(\PDO::FETCH_ASSOC);
 
     return PaymentMethodModel::fromArray($result);
 
