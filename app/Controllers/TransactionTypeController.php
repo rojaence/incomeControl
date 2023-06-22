@@ -37,4 +37,11 @@ class TransactionTypeController extends BaseController
       throw new \Exception("El tipo de data debe ser una instancia de TransactionTypeModel");
     }
   }
+
+  public function destroy($id)
+  {
+    $query = $this->dbConnection->prepare("DELETE FROM transaction_type WHERE id = :id");
+    $query->bindParam(':id', $id, \PDO::PARAM_INT);
+    $query->execute();
+  }
 }

@@ -63,7 +63,7 @@ abstract class BaseController
   /**
    * Elimina un recurso en la base de datos
   */
-  public function destroy()
+  public function destroy($id)
   {
     
   }

@@ -53,4 +53,11 @@ class PaymentMethodController extends BaseController
       throw new \Exception("El tipo de data debe ser una instancia de PaymentMethodModel");
     }
   }
+
+  public function destroy($id)
+  {
+    $query = $this->dbConnection->prepare("DELETE FROM payment_method WHERE id = :id");
+    $query->bindParam(':id', $id, \PDO::PARAM_INT);
+    $query->execute();
+  }
 }

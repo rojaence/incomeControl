@@ -41,4 +41,11 @@ class WithdrawalController extends BaseController
       throw new \Exception("El tipo de data debe ser una instancia de WithdrawalModel");
     }
   }
+
+  public function destroy($id)
+  {
+    $query = $this->dbConnection->prepare("DELETE FROM withdrawal WHERE id = :id");
+    $query->bindParam(':id', $id, \PDO::PARAM_INT);
+    $query->execute();
+  }
 }

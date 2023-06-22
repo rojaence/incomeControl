@@ -56,11 +56,29 @@ try {
   echo "Nuevo id para income: {$income1->getId()}"; */
 
   // Insertar un Withdrawal
-  $withdrawalController = new WithdrawalController();
+  /* $withdrawalController = new WithdrawalController();
   $withdrawal1 = new WithdrawalModel(amount: 250, description: "Descripción de ejemplo", paymentMethodId: $pm1->getId(), transactionTypeId: $tp1->getId());
   $withdrawalController->store($withdrawal1);
   echo "Registro exitoso\n";
-  echo "Nuevo id para withdrawal: {$withdrawal1->getId()}";
+  echo "Nuevo id para withdrawal: {$withdrawal1->getId()}"; */
+
+
+  // ELIMINAR REGISTROS
+  // INSERSIÓN DE REGISTROS DE PRUEBA
+  /* $pm2 = new PaymentMethodModel('example', 'example description');
+  $payment_method_controller->store($pm2);
+
+  $list = $payment_method_controller->index();
+  var_dump($list);
+
+  
+  echo "El nuevo elemento {$pm2->getName()} registrado tiene el id: {$pm2->getId()}";
+  echo "\n________________________________________________________________\n";
+  $payment_method_controller->destroy($pm2->getId());
+  $pm2 = null;
+
+  $list = $payment_method_controller->index();
+  var_dump($list); */
 
 } catch(Exception $e)
 {

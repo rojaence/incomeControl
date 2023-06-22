@@ -40,4 +40,11 @@ class IncomeController extends BaseController
       throw new \Exception("El tipo de data debe ser una instancia de IncomeModel");
     }
   }
+
+  public function destroy($id)
+  {
+    $query = $this->dbConnection->prepare("DELETE FROM income WHERE id = :id");
+    $query->bindParam(':id', $id, \PDO::PARAM_INT);
+    $query->execute();
+  }
 }
