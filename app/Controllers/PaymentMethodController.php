@@ -60,4 +60,23 @@ class PaymentMethodController extends BaseController
     $query->bindParam(':id', $id, \PDO::PARAM_INT);
     $query->execute();
   }
+
+  public function update($data)
+  {
+    if ($data instanceof PaymentMethodModel)
+    {
+      $query = $this->dbConnection->prepare("UPDATE payment_method SET name = :name, description = :description WHERE id = :id");
+      $id = $data->getId();
+      $name = $data->getName();
+      $description = $data->getDescription();
+      $query->bindParam(':name', $name, \PDO::PARAM_STR);
+      $query->bindParam(':description', $description, \PDO::PARAM_STR);
+      $query->bindParam(':id', $id, \PDO::PARAM_INT);
+      $query->execute();
+    } 
+    else 
+    {
+      throw new \InvalidArgumentException("El tipo de data debe ser una instancia de PaymentMethodModel");
+    }
+  }
 }

@@ -145,15 +145,15 @@ class WithdrawalModel
 
   public static function fromArray(array $data)
   {
-    if (isset($data['amount'], $data['description'], $data['paymentMethodId'], $data['transactionTypeId']))
+    if (isset($data['amount'], $data['description'], $data['payment_method_id'], $data['transaction_type_id']))
     {
       $amount = $data['amount'];
       $description = $data['description'];
-      $paymentMethodId = $data['paymentMethodId'];
-      $transactionTypeId = $data['transactionTypeId'];
+      $paymentMethodId = $data['payment_method_id'];
+      $transactionTypeId = $data['transaction_type_id'];
       $date = $data['date'] ?? date("Y-m-d\TH:i:s");
       $id = $data['id'] ?? null;
-      return new self($amount, $description, $date, $paymentMethodId, $transactionTypeId, $id);
+      return new self($amount, $description, $paymentMethodId, $transactionTypeId, $date, $id);
     } else {
       throw new \InvalidArgumentException("El array no contiene los atributos requeridos");
     }

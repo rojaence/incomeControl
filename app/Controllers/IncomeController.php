@@ -47,4 +47,29 @@ class IncomeController extends BaseController
     $query->bindParam(':id', $id, \PDO::PARAM_INT);
     $query->execute();
   }
+
+  public function update($data)
+  {
+    if ($data instanceof IncomeModel)
+    {
+      $query = $this->dbConnection->prepare("UPDATE income SET payment_method_id = :payment_method_id, transaction_type_id = :transaction_type_id, date = :date, amount = :amount, description = :description WHERE id = :id");
+      $paymentMethodId = $data->getPaymentMethodId();
+      $transactionTypeId = $data->getTransactionTypeId();
+      $date = $data->getDate();
+      $amount = $data->getAmount();
+      $description = $data->getDescription();
+      $id = $data->getId();
+      $query->bindValue(':payment_method_id', $paymentMethodId, \PDO::PARAM_INT);
+      $query->bindValue(':transaction_type_id', $transactionTypeId, \PDO::PARAM_INT);
+      $query->bindValue(':date', $date, \PDO::PARAM_STR);
+      $query->bindValue(':amount', $amount, \PDO::PARAM_STR);
+      $query->bindValue(':description', $description, \PDO::PARAM_STR);
+      $query->bindValue(':id', $id, \PDO::PARAM_INT);
+      $query->execute();
+    }
+    else 
+    {
+      throw new \InvalidArgumentException("El tipo de data debe ser una instancia de IncomeModel");
+    }
+  }
 }

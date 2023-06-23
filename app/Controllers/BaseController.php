@@ -55,7 +55,7 @@ abstract class BaseController
   /**
    * Actualiza un recurso en la base de datos
   */
-  public function update()
+  public function update($data)
   {
     
   }
