@@ -12,7 +12,7 @@ class TransactionTypeController extends BaseController
     $query->execute();
     $rows = $query->fetchAll(\PDO::FETCH_ASSOC);
     $transactionTypes = array_map(function ($row) { return TransactionTypeModel::fromArray($row); }, $rows);
-    return $transactionTypes;
+    require '../resources/views/transactiontypes/index.php';
   }
 
   public function show($id)

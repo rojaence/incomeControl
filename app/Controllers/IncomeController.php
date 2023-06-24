@@ -6,13 +6,14 @@ use App\Models\IncomeModel;
 
 class IncomeController extends BaseController
 {
-  public function index(): array
+  public function index()
   {
     $query = $this->dbConnection->prepare("SELECT * FROM income");
     $query->execute();
     $incomes = $query->fetchAll(\PDO::FETCH_ASSOC);
     $incomes = array_map(function ($income) { return IncomeModel::fromArray($income); }, $incomes);
-    return $incomes;
+    require "../resources/views/incomes/index.php";
+    // return $incomes;
   }
 
   public function show($id): object

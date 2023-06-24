@@ -6,7 +6,9 @@
   "autoload": {
     "psr-4": {
       "Database\\": "database",
-      "App\\": "app"
+      "App\\": "app",
+      "Router\\": "router",
+      "Constants\\": "constants"
     }
   },
   "authors": [

@@ -6,7 +6,7 @@ use App\Models\WithdrawalModel;
 
 class WithdrawalController extends BaseController
 {
-  public function index(): array
+  public function index()
   {
     $query = $this->dbConnection->prepare("SELECT * FROM withdrawal");
     $query->execute();
@@ -14,7 +14,7 @@ class WithdrawalController extends BaseController
     $withdrawals = array_map(function ($row) {
       return WithdrawalModel::fromArray($row);
     }, $rows);
-    return $withdrawals;
+    require "../resources/views/withdrawals/index.php";
   }
 
   public function show($id): object

@@ -6,7 +6,7 @@ use App\Models\PaymentMethodModel;
 
 class PaymentMethodController extends BaseController
 {
-  public function index(): array
+  public function index()
   {
     $query = $this->dbConnection->prepare("SELECT * FROM payment_method");
     $query->execute();
@@ -15,7 +15,7 @@ class PaymentMethodController extends BaseController
     $paymentMethods = array_map(function ($paymentMethod) {
       return PaymentMethodModel::fromArray($paymentMethod);
     }, $paymentMethods);
-    return $paymentMethods;
+    require "../resources/views/paymentmethods/index.php";
   }
 
   public function show($id): object
