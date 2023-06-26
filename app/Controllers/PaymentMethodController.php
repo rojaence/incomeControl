@@ -3,9 +3,12 @@
 namespace App\Controllers;
 
 use App\Models\PaymentMethodModel;
+use Utils\TemplateRenderer;
 
 class PaymentMethodController extends BaseController
 {
+  private $templateRenderer;
+
   public function index()
   {
     $query = $this->dbConnection->prepare("SELECT * FROM payment_method");
@@ -15,7 +18,8 @@ class PaymentMethodController extends BaseController
     $paymentMethods = array_map(function ($paymentMethod) {
       return PaymentMethodModel::fromArray($paymentMethod);
     }, $paymentMethods);
-    require "../resources/views/paymentmethods/index.php";
+    echo $this->templateRenderer->render("paymentmethods::index", ['paymentMethods' => $paymentMethods]);
+    // require "../resources/views/paymentmethods/index.php";
   }
 
   public function show($id): object
@@ -54,6 +58,11 @@ class PaymentMethodController extends BaseController
     }
   }
 
+  public function create()
+  {
+    require "../resources/views/paymentmethods/create.php";
+  }
+
   public function destroy($id)
   {
     $query = $this->dbConnection->prepare("DELETE FROM payment_method WHERE id = :id");
@@ -78,5 +87,10 @@ class PaymentMethodController extends BaseController
     {
       throw new \InvalidArgumentException("El tipo de data debe ser una instancia de PaymentMethodModel");
     }
+  }
+
+  public function setTemplateRenderer(TemplateRenderer $templateRenderer)
+  {
+    $this->templateRenderer = $templateRenderer;
   }
 }

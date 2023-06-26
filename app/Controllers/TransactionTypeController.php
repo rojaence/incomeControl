@@ -3,16 +3,20 @@
 namespace App\Controllers;
 
 use App\Models\TransactionTypeModel;
+use Utils\TemplateRenderer;
 
 class TransactionTypeController extends BaseController
 {
+  private $templateRenderer;
+
   public function index()
   {    
     $query = $this->dbConnection->prepare("SELECT * FROM transaction_type");
     $query->execute();
     $rows = $query->fetchAll(\PDO::FETCH_ASSOC);
     $transactionTypes = array_map(function ($row) { return TransactionTypeModel::fromArray($row); }, $rows);
-    require '../resources/views/transactiontypes/index.php';
+    echo $this->templateRenderer->render("transactiontypes::index", ["transactionTypes" => $transactionTypes]);
+    // require '../resources/views/transactiontypes/index.php';
   }
 
   public function show($id)
@@ -65,5 +69,10 @@ class TransactionTypeController extends BaseController
     {
       throw new \InvalidArgumentException("El tipo de data debe ser una instancia de TransactionTypeModel");
     }
+  }
+
+  public function setTemplateRenderer(TemplateRenderer $templateRenderer)
+  {
+    $this->templateRenderer = $templateRenderer;
   }
 }

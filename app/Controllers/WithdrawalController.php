@@ -3,9 +3,11 @@
 namespace App\Controllers;
 
 use App\Models\WithdrawalModel;
+use Utils\TemplateRenderer;
 
 class WithdrawalController extends BaseController
 {
+  private $templateRenderer;
   public function index()
   {
     $query = $this->dbConnection->prepare("SELECT * FROM withdrawal");
@@ -14,7 +16,8 @@ class WithdrawalController extends BaseController
     $withdrawals = array_map(function ($row) {
       return WithdrawalModel::fromArray($row);
     }, $rows);
-    require "../resources/views/withdrawals/index.php";
+    echo $this->templateRenderer->render("withdrawals::index", ["withdrawals" => $withdrawals]);
+    // require "../resources/views/withdrawals/index.php";
   }
 
   public function show($id): object
@@ -72,5 +75,10 @@ class WithdrawalController extends BaseController
     {
       throw new \InvalidArgumentException("El tipo de data debe ser una instancia de IncomeModel");
     }
+  }
+
+  public function setTemplateRenderer(TemplateRenderer $templateRenderer)
+  {
+    $this->templateRenderer = $templateRenderer;
   }
 }

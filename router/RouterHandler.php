@@ -3,6 +3,7 @@
 namespace Router;
 
 use Constants\HttpMethod;
+use Utils\TemplateRenderer;
 
 class RouterHandler
 {
@@ -19,10 +20,11 @@ class RouterHandler
     $this->data = $data;
   }
 
-  public function route($controller, $id)
+  public function route($controller, TemplateRenderer $templates, $id)
   {
 
     $resource = new $controller(); 
+    $resource->setTemplateRenderer($templates);
 
     switch ($this->method) {
       case HttpMethod::GET:

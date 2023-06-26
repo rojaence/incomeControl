@@ -3,16 +3,20 @@
 namespace App\Controllers;
 
 use App\Models\IncomeModel;
+use Utils\TemplateRenderer;
 
 class IncomeController extends BaseController
 {
+  private $templateRenderer;
+  
   public function index()
   {
     $query = $this->dbConnection->prepare("SELECT * FROM income");
     $query->execute();
     $incomes = $query->fetchAll(\PDO::FETCH_ASSOC);
     $incomes = array_map(function ($income) { return IncomeModel::fromArray($income); }, $incomes);
-    require "../resources/views/incomes/index.php";
+    echo $this->templateRenderer->render("incomes::index", ["incomes" => $incomes]);
+    // require "../resources/views/incomes/index.php";
     // return $incomes;
   }
 
@@ -72,5 +76,10 @@ class IncomeController extends BaseController
     {
       throw new \InvalidArgumentException("El tipo de data debe ser una instancia de IncomeModel");
     }
+  }
+
+  public function setTemplateRenderer(TemplateRenderer $templateRenderer)
+  {
+    $this->templateRenderer = $templateRenderer;
   }
 }
