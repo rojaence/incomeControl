@@ -9,30 +9,8 @@
   <title><?= $this->e($title) ?></title>
 </head>
 <body>
-  <header class="header shadow-sm">
 
-    <button id="sidebar-toggle-on" class="btn btn-primary d-md-none">
-      <i class="bi bi-list"></i>
-    </button>
-
-    <h1 class="fs-3">
-      <?= $this->e($title) ?>
-    </h1>
-
-    <div class="ms-auto dropdown" id="theme-selector" title="Tema">
-      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <i id="theme-icon-active" class="bi"></i>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-end">
-        <li id="item-light"><button class="dropdown-item d-flex align-items-center gap-2" data-bs-theme-value="light"><i class="bi bi-brightness-high-fill"></i>Claro</button></li>
-        <li id="item-dark"><button class="dropdown-item d-flex align-items-center gap-2" data-bs-theme-value="dark"><i class="bi bi-moon-fill"></i>Oscuro</button></li>
-        <li id="item-auto"><button class="dropdown-item d-flex align-items-center gap-2" data-bs-theme-value="auto"><i class="bi bi-circle-half"></i>Auto</button></li>
-      </ul>
-    </div>
-    
-  </header>
-  
-  <div id="sidebar" class="sidebar sidebar--close">
+<div id="sidebar" class="sidebar sidebar--close">
     <div class="d-flex justify-content-between sticky-top p-2" style="background-color: var(--bs-secondary-bg);">
       <h3>Menú</h3>
       <button id="sidebar-toggle-off" class="btn btn-outline-danger d-md-none">
@@ -58,12 +36,35 @@
     </ul>
   </div>
 
+  <header class="header shadow-sm">
+
+    <button id="sidebar-toggle-on" class="btn btn-primary d-md-none">
+      <i class="bi bi-list"></i>
+    </button>
+
+    <h1 class="fs-3">
+      <?= $this->e($title) ?>
+    </h1>
+
+    <div class="ms-auto dropdown" id="theme-selector" title="Tema">
+      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i id="theme-icon-active" class="bi"></i>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li id="item-light"><button class="dropdown-item d-flex align-items-center gap-2" data-bs-theme-value="light"><i class="bi bi-brightness-high-fill"></i>Claro</button></li>
+        <li id="item-dark"><button class="dropdown-item d-flex align-items-center gap-2" data-bs-theme-value="dark"><i class="bi bi-moon-fill"></i>Oscuro</button></li>
+        <li id="item-auto"><button class="dropdown-item d-flex align-items-center gap-2" data-bs-theme-value="auto"><i class="bi bi-circle-half"></i>Auto</button></li>
+      </ul>
+    </div>
+    
+  </header>
+
 
   <main class="main">
     <?=$this->section('mainContent')?>
   </main>
 
-  <footer>
+  <footer class="footer">
     Coded by Ronny Endara
   </footer>
 
