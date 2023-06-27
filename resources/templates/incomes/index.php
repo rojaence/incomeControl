@@ -1,5 +1,7 @@
 <?php $this->layout('base', ['title' => 'Ingresos']) ?>
 
+<?php $this->start('currentPage') ?>incomes<?php $this->stop() ?>
+
 <?php $this->start('mainContent'); ?>
   <h1>Lista de ingresos</h1>
   <table>

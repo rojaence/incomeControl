@@ -1,4 +1,6 @@
-<?php $this->layout('base', ['title' => 'Inicio']) ?>
+<?php $this->layout('base', ['title' => 'Egresos']) ?>
+
+<?php $this->start('currentPage') ?>withdrawals<?php $this->stop() ?>
 
 <?php $this->start('mainContent'); ?>
   <h1>Lista de egresos</h1>

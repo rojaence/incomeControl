@@ -9,39 +9,57 @@
   <title><?= $this->e($title) ?></title>
 </head>
 <body>
-  <header class="header">
+  <header class="header shadow-sm">
+
     <button id="sidebar-toggle-on" class="btn btn-primary d-md-none">
       <i class="bi bi-list"></i>
     </button>
-    <h1>Income Control</h1>
-  </header>
 
+    <h1 class="fs-3">
+      <?= $this->e($title) ?>
+    </h1>
+
+    <div class="ms-auto dropdown" id="theme-selector" title="Tema">
+      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i id="theme-icon-active" class="bi"></i>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li id="item-light"><button class="dropdown-item d-flex align-items-center gap-2" data-bs-theme-value="light"><i class="bi bi-brightness-high-fill"></i>Claro</button></li>
+        <li id="item-dark"><button class="dropdown-item d-flex align-items-center gap-2" data-bs-theme-value="dark"><i class="bi bi-moon-fill"></i>Oscuro</button></li>
+        <li id="item-auto"><button class="dropdown-item d-flex align-items-center gap-2" data-bs-theme-value="auto"><i class="bi bi-circle-half"></i>Auto</button></li>
+      </ul>
+    </div>
+    
+  </header>
+  
   <div id="sidebar" class="sidebar sidebar--close">
     <div class="d-flex justify-content-between sticky-top p-2" style="background-color: var(--bs-secondary-bg);">
-      <h3>Finances</h3>
+      <h3>Menú</h3>
       <button id="sidebar-toggle-off" class="btn btn-outline-danger d-md-none">
         <i class="bi bi-x-lg"></i>
       </button>
     </div>
     <ul class="nav flex-column">
       <li class="nav-item">
-        <a class="nav-link" href="/incomes">Ingresos</a>
+        <a class="nav-link <?= ($this->section('currentPage') === 'home') ? 'nav-link--active' : '' ?>" href="/">Inicio</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/withdrawals">Egresos</a>
+        <a class="nav-link <?= ($this->section('currentPage') === 'incomes') ? 'nav-link--active' : '' ?>" href="/incomes">Ingresos</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/paymentmethods">Métodos de pago</a>
+        <a class="nav-link <?= ($this->section('currentPage') === 'withdrawals') ? 'nav-link--active' : '' ?>" href="/withdrawals">Egresos</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/transactiontypes">Tipos de transacción</a>
+        <a class="nav-link <?= ($this->section('currentPage') === 'paymentmethods') ? 'nav-link--active' : '' ?>" href="/paymentmethods">Métodos de pago</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link <?= ($this->section('currentPage') === 'transactiontypes') ? 'nav-link--active' : '' ?>" href="/transactiontypes">Tipos de transacción</a>
       </li>
     </ul>
   </div>
 
 
   <main class="main">
-    
     <?=$this->section('mainContent')?>
   </main>
 

@@ -1,5 +1,7 @@
 <?php $this->layout('base', ['title' => 'Tipos de transacción']) ?>
 
+<?php $this->start('currentPage') ?>transactiontypes<?php $this->stop() ?>
+
 <?php $this->start('mainContent'); ?>
   <h1>Tipos de transacción</h1>
   <ul>

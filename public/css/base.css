@@ -5,7 +5,7 @@
   height: 100vh;
   width: 15.625rem;
   padding: 0 0 1.25rem;
-  z-index: 100;
+  z-index: 1000;
   transform: translateX(0);
   background-color: var(--bs-secondary-bg);
   transition: transform 0.3s ease-in-out;
@@ -26,15 +26,33 @@
 body {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .header {
   display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 900;
   padding: 1rem;
   gap: 1rem;
   width: 100%;
   flex-grow: 1;
   flex-basis: 0;
+  background-color: var(--bs-tertiary-bg);
+}
+
+.nav-link {
+  color: var(--bs-body-color);
+}
+
+.nav-link:hover {
+  background-color: var(--bs-dark-bg-subtle);
+}
+
+.nav-link--active,
+.nav-link--active:hover {
+  background-color: var(--bs-primary-bg-subtle);
 }
 
 @media (max-width: 767px) {

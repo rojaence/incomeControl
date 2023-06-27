@@ -1,4 +1,6 @@
-<?php $this->layout('base', ['title' => 'Inicio']) ?>
+<?php $this->layout('base', ['title' => 'Métodos de pago']) ?>
+
+<?php $this->start('currentPage') ?>paymentmethods<?php $this->stop() ?>
 
 <?php $this->start('mainContent'); ?>
   <h1>Métodos de pago</h1>
