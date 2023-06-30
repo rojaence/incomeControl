@@ -1,4 +1,4 @@
-<?php $this->layout('base', ['title' => "Tipos de transacción | Editar ({$paymentMethod->getName()})"]) ?>
+<?php $this->layout('base', ['title' => "Métodos de pago | Editar ({$paymentMethod->getName()})"]) ?>
 
 <?php $this->start('mainContent'); ?>
 <div class="row justify-content-center">

@@ -7,6 +7,7 @@ use App\Controllers\PaymentMethodController;
 use App\Controllers\TransactionTypeController;
 use App\Controllers\WithdrawalController;
 use App\Models\PaymentMethodModel;
+use App\Models\TransactionTypeModel;
 use Router\RouterHandler;
 use Utils\TemplateRenderer;
 use Dotenv\Dotenv;
@@ -73,7 +74,7 @@ try {
       $method = $_POST["method"] ?? "GET";
       $router->setMethod(strtoupper($method));
       $router->setData($_POST);
-      $router->route(TransactionTypeController::class, $templateRender, $routeId);
+      $router->route(TransactionTypeController::class, $templateRender, $routeId, model: TransactionTypeModel::class, dataId: $dataId);
       break;
   
     default:

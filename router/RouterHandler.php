@@ -39,12 +39,6 @@ class RouterHandler
         } else {
           $resource->index();
         }
-        /* if ($routeId && $routeId == "create") {
-        } else if ($routeId && $routeId == "edit") {
-        } else if ($routeId ) {
-
-        } else {
-        } */
         break;
       case HttpMethod::POST:
         $data = $model::fromArray($this->data);

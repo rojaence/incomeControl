@@ -16,7 +16,6 @@ class TransactionTypeController extends BaseController
     $rows = $query->fetchAll(\PDO::FETCH_ASSOC);
     $transactionTypes = array_map(function ($row) { return TransactionTypeModel::fromArray($row); }, $rows);
     echo $this->templateRenderer->render("transactiontypes::index", ["transactionTypes" => $transactionTypes]);
-    // require '../resources/views/transactiontypes/index.php';
   }
 
   public function show($id)
@@ -26,20 +25,33 @@ class TransactionTypeController extends BaseController
     $row = $query->fetch(\PDO::FETCH_ASSOC);
     $transactionType = TransactionTypeModel::fromArray($row);
     return $transactionType;
-    // return new TransactionTypeModel(id: $transactionType['id'], name: $transactionType['name'], description: $transactionType['description']);
+  }
+
+  public function create() {
+    echo $this->templateRenderer->render('transactiontypes::create');
   }
 
   public function store($data)
   {
     if ($data instanceof TransactionTypeModel)
     {
-      $query = $this->dbConnection->prepare("INSERT INTO transaction_type (name , description) VALUES (:name, :description)");
-      $name = $data->getName();
-      $description = $data->getDescription();
-      $query->bindParam(":name", $name, \PDO::PARAM_STR);
-      $query->bindParam(":description", $description, \PDO::PARAM_STR);
-      $query->execute();
-      $data->setId($this->dbConnection->lastInsertId());
+
+      if (empty($data->getName())) {
+        echo $this->templateRenderer->render("transactiontypes::create", ['formError' => 'El nombre no puede estar vacío']);
+      } else if ($this->isDuplicateName(name: $data->getName(), id: $data->getId())) {
+        echo $this->templateRenderer->render("transactiontypes::create", ['formError' => 'Ya existe un registro con el nombre proporcionado']);
+      } else {
+        $query = $this->dbConnection->prepare("INSERT INTO transaction_type (name, description, state) VALUES (:name, :description, :state)");
+        $name = $data->getName();
+        $description = $data->getDescription();
+        $state = $data->getState();
+        $query->bindParam(":name", $name, \PDO::PARAM_STR);
+        $query->bindParam(":description", $description, \PDO::PARAM_STR);
+        $query->bindParam(":state", $state, \PDO::PARAM_BOOL);
+        $query->execute();
+        $data->setId($this->dbConnection->lastInsertId());
+        header("location: transactiontypes");
+      }
     } else {
       throw new \Exception("El tipo de data debe ser una instancia de TransactionTypeModel");
     }
@@ -52,27 +64,49 @@ class TransactionTypeController extends BaseController
     $query->execute();
   }
 
+  public function edit($id) {
+    $data = $this->show($id);
+    echo $this->templateRenderer->render("transactiontypes::edit", ["transactionType" => $data]);
+  }
+
   public function update($data)
   {
-    if ($data instanceof TransactionTypeModel)
-    {
-      $query = $this->dbConnection->prepare("UPDATE transaction_type SET name = :name, description = :description WHERE id = :id");
+    if (empty($data->getName())) {
+      echo $this->templateRenderer->render('transactiontypes::edit', ['formError' => "El nombre no puede estar vacío", "transactionType" => $data]);
+    } else if ($this->isDuplicateName($data->getName(), $data->getId())) {
+      echo $this->templateRenderer->render("transactiontypes::edit", ['formError' => 'Ya existe un registro con el nombre proporcionado', "transactionType" => $data]);
+    } else {
+      $query = $this->dbConnection->prepare("UPDATE transaction_type SET name = :name, description = :description, state = :state WHERE id = :id");
       $id = $data->getId();
       $name = $data->getName();
       $description = $data->getDescription();
+      $state = $data->getState();
       $query->bindParam(':name', $name, \PDO::PARAM_STR);
       $query->bindParam(':description', $description, \PDO::PARAM_STR);
+      $query->bindParam(':state', $state, \PDO::PARAM_BOOL);
       $query->bindParam(':id', $id, \PDO::PARAM_INT);
       $query->execute();
-    }
-    else 
-    {
-      throw new \InvalidArgumentException("El tipo de data debe ser una instancia de TransactionTypeModel");
+      header("location: transactiontypes");
     }
   }
 
   public function setTemplateRenderer(TemplateRenderer $templateRenderer)
   {
     $this->templateRenderer = $templateRenderer;
+  }
+
+  public function isDuplicateName(string $name, ?int $id = null) {
+    $name = strtolower($name);
+    $query = "SELECT * FROM transaction_type WHERE LOWER(name) = :name";
+    $params = [":name" => $name];
+    if ($id!= null) {
+      $query.= " AND id <> :id";
+      $params[":id"] = $id;
+    }
+    $query.= " LIMIT 1";
+    $query = $this->dbConnection->prepare($query);
+    $query->execute($params);
+    $count = $query->fetchColumn();  
+    return $count > 0;
   }
 }

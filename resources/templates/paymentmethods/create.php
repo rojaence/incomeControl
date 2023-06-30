@@ -1,6 +1,4 @@
-<?php $this->layout('base', ['title' => 'Nuevo tipo de transacción']) ?>
-
-<?php $this->start('currentPage') ?>Nuevo tipo de transacción<?php $this->stop() ?>
+<?php $this->layout('base', ['title' => 'Nuevo método de pago']) ?>
 
 <?php $this->start('mainContent'); ?>
 <div class="row justify-content-center">

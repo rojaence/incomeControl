@@ -82,7 +82,6 @@ class PaymentMethodModel
       $name = $data['name'];
       $description = $data['description'] ?? '';
       $id = $data['id'] ?? null;
-      // $state = isset($data['state']) && $data['state'] === 'on';
       $stateValues = ['on', true, 1, '1'];
       $state = isset($data['state']) && in_array($data['state'], $stateValues);
       return new self($name, $description, $id, $state);

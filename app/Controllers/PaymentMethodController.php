@@ -20,7 +20,6 @@ class PaymentMethodController extends BaseController
     }, $paymentMethods);
     $toast = ["message" => "Mensaje de prueba"];
     echo $this->templateRenderer->render("paymentmethods::index", ['paymentMethods' => $paymentMethods, "toast" => $toast]);
-    // require "../resources/views/paymentmethods/index.php";
   }
 
   public function show($id): object
@@ -32,8 +31,6 @@ class PaymentMethodController extends BaseController
     $result = $query->fetch(\PDO::FETCH_ASSOC);
 
     return PaymentMethodModel::fromArray($result);
-
-    // return new PaymentMethodModel(id: $result['id'], name: $result['name'], description: $result['description']);
   }
 
   public function edit($id)
@@ -74,7 +71,6 @@ class PaymentMethodController extends BaseController
 
   public function create()
   {
-    // require "../resources/views/paymentmethods/create.php";
     echo $this->templateRenderer->render('paymentmethods::create');
   }
 
@@ -86,10 +82,7 @@ class PaymentMethodController extends BaseController
   }
 
   public function update($data)
-  {
-    /* if ($data instanceof PaymentMethodModel)
-    { */
-    // } 
+  { 
     if ($data->getName() != "" ) {
       $query = $this->dbConnection->prepare("UPDATE payment_method SET name = :name, description = :description, state = :state WHERE id = :id");
       $id = $data->getId();
@@ -105,7 +98,6 @@ class PaymentMethodController extends BaseController
     }
     else 
     {
-      // throw new \InvalidArgumentException("El tipo de data debe ser una instancia de PaymentMethodModel");
       echo $this->templateRenderer->render('paymentmethods::edit', ['formError' => "El nombre no puede estar vacío", "paymentMethod" => $data]);
     }
   }
@@ -113,5 +105,20 @@ class PaymentMethodController extends BaseController
   public function setTemplateRenderer(TemplateRenderer $templateRenderer)
   {
     $this->templateRenderer = $templateRenderer;
+  }
+
+  public function isDuplicateName(string $name, ?int $id = null) {
+    $name = strtolower($name);
+    $query = "SELECT * FROM transaction_type WHERE LOWER(name) = :name";
+    $params = [":name" => $name];
+    if ($id!= null) {
+      $query.= " AND id <> :id";
+      $params[":id"] = $id;
+    }
+    $query.= " LIMIT 1";
+    $query = $this->dbConnection->prepare($query);
+    $query->execute($params);
+    $count = $query->fetchColumn();  
+    return $count > 0;
   }
 }
