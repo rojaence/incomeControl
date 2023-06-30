@@ -1,13 +1,15 @@
 CREATE TABLE payment_method (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(50),
-  description VARCHAR(150) NULL
+  name VARCHAR(50) NOT NULL,
+  description VARCHAR(150) NULL,
+  state BIT(1) NOT NULL DEFAULT b'1'
 );
 
 CREATE TABLE transaction_type (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(50),
-  description VARCHAR(150) NULL
+  name VARCHAR(50) NOT NULL,
+  description VARCHAR(150) NULL,
+  state BIT(1) NOT NULL DEFAULT b'1'
 );
 
 CREATE TABLE withdrawal (

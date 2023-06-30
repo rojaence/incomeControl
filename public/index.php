@@ -6,6 +6,7 @@ use App\Controllers\IncomeController;
 use App\Controllers\PaymentMethodController;
 use App\Controllers\TransactionTypeController;
 use App\Controllers\WithdrawalController;
+use App\Models\PaymentMethodModel;
 use Router\RouterHandler;
 use Utils\TemplateRenderer;
 use Dotenv\Dotenv;
@@ -19,7 +20,8 @@ $slug = $_GET["slug"];
 $slug = explode("/", $slug);
 
 $resource = $slug[0] === "" ? "/" : $slug[0];
-$id = $slug[1] ?? null;
+$routeId = $slug[1] ?? null;
+$dataId = $slug[2]  ?? null;
 
 // Instancia del motor de plantillas
 $templates = new League\Plates\Engine(__DIR__ . "/.." . '/resources/templates');
@@ -35,48 +37,53 @@ $router = new RouterHandler();
 // Instancia TemplateRenderer
 $templateRender = new TemplateRenderer($templates);
 
-switch ($resource) {
+try {
+  switch ($resource) {
+  
+    case '/':
+      try {
+        echo $homePage->render();
+      } catch (Exception $e){
+        print_r($e);
+      }
+      break;
+  
+    case "incomes":
+      $method = $_POST["method"] ?? "GET";
+      $router->setMethod(strtoupper($method));
+      $router->setData($_POST);
+      $router->route(IncomeController::class, $templateRender, $routeId);
+      break;
+  
+    case "withdrawals":
+      $method = $_POST["method"] ?? "GET";
+      $router->setMethod($method);
+      $router->setData($_POST);
+      $router->route(WithdrawalController::class, $templateRender, $routeId);
+      break;
 
-  case '/':
-    try {
-      echo $homePage->render();
-    } catch (Exception $e){
-      print_r($e);
-    }
-    break;
-
-  case "incomes":
-    $method = $_POST["method"] ?? "GET";
-    $router->setMethod($method);
-    $router->setData($_POST);
-    $router->route(IncomeController::class, $templateRender, $id);
-    break;
-
-  case "withdrawals":
-    $method = $_POST["method"] ?? "GET";
-    $router->setMethod($method);
-    $router->setData($_POST);
-    $router->route(WithdrawalController::class, $templateRender, $id);
-    break;
-
-
-  case "paymentmethods":
-    $method = $_POST["method"] ?? "GET";
-    $router->setMethod($method);
-    $router->setData($_POST);
-    $router->route(PaymentMethodController::class, $templateRender, $id);
-    break;
-
-  case "transactiontypes":
-    $method = $_POST["method"] ?? "GET";
-    $router->setMethod($method);
-    $router->setData($_POST);
-    $router->route(TransactionTypeController::class, $templateRender, $id);
-    break;
-
-  default:
-    echo "404 Not Found";
-    break;
-
+    case "paymentmethods":
+      $method = $_POST["method"] ?? "GET";
+      $router->setMethod(strtoupper($method));
+      $router->setData($_POST);
+      $router->route(PaymentMethodController::class, $templateRender, $routeId, model: PaymentMethodModel::class, dataId: $dataId);
+      break;
+  
+    case "transactiontypes":
+      $method = $_POST["method"] ?? "GET";
+      $router->setMethod(strtoupper($method));
+      $router->setData($_POST);
+      $router->route(TransactionTypeController::class, $templateRender, $routeId);
+      break;
+  
+    default:
+      echo "404 Not Found";
+      break;
+  
+  }
+} catch (\Exception $e) {
+  $msg = $e->getMessage();
+  echo $msg;
 }
+
 ?>

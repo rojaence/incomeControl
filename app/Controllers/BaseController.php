@@ -47,7 +47,7 @@ abstract class BaseController
   /**
    * Muestra el formulario para editar un único recurso
   */
-  public function edit()
+  public function edit($id)
   {
     
   }

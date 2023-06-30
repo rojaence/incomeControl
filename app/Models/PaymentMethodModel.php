@@ -7,12 +7,14 @@ class PaymentMethodModel
   protected ?int $id;
   protected string $name;
   protected string $description;
+  protected bool $state;
 
-  public function __construct(string $name, ?string $description, ?int $id = null)
+  public function __construct(string $name, ?string $description, ?int $id = null, bool $state = true)
   {
     $this->name = $name;
     $this->description = $description ?? '';
     $this->id = $id;
+    $this->state = $state;
   }
 
   /**
@@ -77,12 +79,35 @@ class PaymentMethodModel
 
   public static function fromArray(array $data) {
     if (isset($data['name'])) {
-        $name = $data['name'];
-        $description = $data['description'] ?? '';
-        $id = $data['id'] ?? null;
-        return new self($name, $description, $id);
+      $name = $data['name'];
+      $description = $data['description'] ?? '';
+      $id = $data['id'] ?? null;
+      // $state = isset($data['state']) && $data['state'] === 'on';
+      $stateValues = ['on', true, 1, '1'];
+      $state = isset($data['state']) && in_array($data['state'], $stateValues);
+      return new self($name, $description, $id, $state);
     } else {
         throw new \InvalidArgumentException('El array no contiene los atributos requeridos.');
     }
+  }
+
+  /**
+   * Get the value of state
+   */ 
+  public function getState()
+  {
+    return $this->state;
+  }
+
+  /**
+   * Set the value of state
+   *
+   * @return  self
+   */ 
+  public function setState(bool $state)
+  {
+    $this->state = $state;
+
+    return $this;
   }
 }

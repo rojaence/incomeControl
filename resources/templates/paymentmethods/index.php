@@ -4,7 +4,7 @@
 
 <?php $this->start('mainContent'); ?>
   <div class="d-flex justify-content-end">
-    <a href="#" class="btn btn-primary">
+    <a href="/paymentmethods/create" class="btn btn-primary">
       <i class="bi bi-plus-lg"></i>
       Nuevo
     </a>
@@ -14,6 +14,7 @@
       <tr>
         <th>Nombre</th>
         <th>Descripción</th>
+        <th>Estado</th>
         <th>Acciones</th>
       </tr>
     </thead>
@@ -23,17 +24,22 @@
           <td><?= $paymentMethod->getName()?></td>
           <td><?= $paymentMethod->getDescription()?></td>
           <td>
+            <?php if ($paymentMethod->getState() === true): ?>
+              <span class="badge text-bg-success">activo</span>              
+            <?php else: ?>
+              <span class="badge text-bg-danger">inactivo</span>               
+            <?php endif; ?>
+          </td>
+          <td>
             <div class="d-flex gap-2">
-              <a href="#" class="btn btn-success" title="Editar">
+              <a href="<?= 'paymentmethods/edit/' . $paymentMethod->getId() ?>" class="btn btn-info" title="Editar">
                 <i class="bi bi-pencil-square"></i>
               </a>      
-              <button class="btn btn-success" title="Deshabilitar">
-                Activo
-              </button>
             </div>
           </td>
         </tr>
       <?php endforeach; ?>
     </tbody>
   </table>
+
 <?php $this->end(); ?>

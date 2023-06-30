@@ -18,7 +18,8 @@ class PaymentMethodController extends BaseController
     $paymentMethods = array_map(function ($paymentMethod) {
       return PaymentMethodModel::fromArray($paymentMethod);
     }, $paymentMethods);
-    echo $this->templateRenderer->render("paymentmethods::index", ['paymentMethods' => $paymentMethods]);
+    $toast = ["message" => "Mensaje de prueba"];
+    echo $this->templateRenderer->render("paymentmethods::index", ['paymentMethods' => $paymentMethods, "toast" => $toast]);
     // require "../resources/views/paymentmethods/index.php";
   }
 
@@ -35,6 +36,12 @@ class PaymentMethodController extends BaseController
     // return new PaymentMethodModel(id: $result['id'], name: $result['name'], description: $result['description']);
   }
 
+  public function edit($id)
+  {
+    $data = $this->show($id);
+    echo $this->templateRenderer->render("paymentmethods::edit", ["paymentMethod" => $data]);
+  }
+
   public function store($data)
   {
     if ($data instanceof PaymentMethodModel) {
@@ -46,13 +53,20 @@ class PaymentMethodController extends BaseController
       $query->execute(); */
 
       // PDO
-      $query = $this->dbConnection->prepare("INSERT INTO payment_method (name, description) VALUES (:name, :description)");
-      $name = $data->getName();
-      $description = $data->getDescription();
-      $query->bindParam(":name", $name, \PDO::PARAM_STR);
-      $query->bindParam(":description", $description, \PDO::PARAM_STR);
-      $query->execute();
-      $data->setId($this->dbConnection->lastInsertId());
+      if (empty($data->getName())) {
+        echo $this->templateRenderer->render("paymentmethods::create", ['formError' => 'El nombre no puede estar vacío']);
+      } else {
+        $query = $this->dbConnection->prepare("INSERT INTO payment_method (name, description, state) VALUES (:name, :description, :state)");
+        $name = $data->getName();
+        $description = $data->getDescription();
+        $state = $data->getState();
+        $query->bindParam(":name", $name, \PDO::PARAM_STR);
+        $query->bindParam(":description", $description, \PDO::PARAM_STR);
+        $query->bindParam(":state", $state, \PDO::PARAM_BOOL);
+        $query->execute();
+        $data->setId($this->dbConnection->lastInsertId());
+        header("location: paymentmethods");
+      }
     } else {
       throw new \Exception("El tipo de data debe ser una instancia de PaymentMethodModel");
     }
@@ -60,7 +74,8 @@ class PaymentMethodController extends BaseController
 
   public function create()
   {
-    require "../resources/views/paymentmethods/create.php";
+    // require "../resources/views/paymentmethods/create.php";
+    echo $this->templateRenderer->render('paymentmethods::create');
   }
 
   public function destroy($id)
@@ -72,20 +87,26 @@ class PaymentMethodController extends BaseController
 
   public function update($data)
   {
-    if ($data instanceof PaymentMethodModel)
-    {
-      $query = $this->dbConnection->prepare("UPDATE payment_method SET name = :name, description = :description WHERE id = :id");
+    /* if ($data instanceof PaymentMethodModel)
+    { */
+    // } 
+    if ($data->getName() != "" ) {
+      $query = $this->dbConnection->prepare("UPDATE payment_method SET name = :name, description = :description, state = :state WHERE id = :id");
       $id = $data->getId();
       $name = $data->getName();
       $description = $data->getDescription();
+      $state = $data->getState();
       $query->bindParam(':name', $name, \PDO::PARAM_STR);
       $query->bindParam(':description', $description, \PDO::PARAM_STR);
+      $query->bindParam(':state', $state, \PDO::PARAM_BOOL);
       $query->bindParam(':id', $id, \PDO::PARAM_INT);
       $query->execute();
-    } 
+      header("location: paymentmethods");
+    }
     else 
     {
-      throw new \InvalidArgumentException("El tipo de data debe ser una instancia de PaymentMethodModel");
+      // throw new \InvalidArgumentException("El tipo de data debe ser una instancia de PaymentMethodModel");
+      echo $this->templateRenderer->render('paymentmethods::edit', ['formError' => "El nombre no puede estar vacío", "paymentMethod" => $data]);
     }
   }
 

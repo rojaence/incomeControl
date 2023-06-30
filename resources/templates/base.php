@@ -61,7 +61,9 @@
 
 
   <main class="main">
-    <?=$this->section('mainContent')?>
+    <div class="container">
+      <?=$this->section('mainContent')?>
+    </div>
   </main>
 
   <footer class="footer">

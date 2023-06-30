@@ -20,7 +20,7 @@ class RouterHandler
     $this->data = $data;
   }
 
-  public function route($controller, TemplateRenderer $templates, $id)
+  public function route($controller, TemplateRenderer $templates, $routeId, $model = null, $dataId = null)
   {
 
     $resource = new $controller(); 
@@ -28,19 +28,34 @@ class RouterHandler
 
     switch ($this->method) {
       case HttpMethod::GET:
-        if ($id && $id == "create") {
-          $resource->create();
-        } else if ($id) {
-          $resource->show($id);
+        if ($routeId) {
+          if ($routeId == "create") {
+            $resource->create();
+          } else if ($routeId == "edit") {
+            $resource->edit($dataId);
+          } else {
+            $resource->show($routeId);
+          }
         } else {
           $resource->index();
         }
+        /* if ($routeId && $routeId == "create") {
+        } else if ($routeId && $routeId == "edit") {
+        } else if ($routeId ) {
+
+        } else {
+        } */
         break;
       case HttpMethod::POST:
-        $resource->store($this->data);
+        $data = $model::fromArray($this->data);
+        $resource->store($data);
+        break;
+      case HttpMethod::PUT:
+        $data = $model::fromArray($this->data);
+        $resource->update($data);
         break;
       case HttpMethod::DELETE:
-        $resource->delete($id);
+        $resource->delete($routeId);
         break;
     }
   }
