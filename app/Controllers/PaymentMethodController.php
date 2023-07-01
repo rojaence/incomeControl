@@ -4,21 +4,24 @@ namespace App\Controllers;
 
 use App\Models\PaymentMethodModel;
 use Utils\TemplateRenderer;
+use Utils\ToastTrait;
+use Constants\ToastType;
 
 class PaymentMethodController extends BaseController
 {
+  use ToastTrait;
   private $templateRenderer;
 
   public function index()
   {
     $query = $this->dbConnection->prepare("SELECT * FROM payment_method");
     $query->execute();
-
     $paymentMethods = $query->fetchAll(\PDO::FETCH_ASSOC);
     $paymentMethods = array_map(function ($paymentMethod) {
       return PaymentMethodModel::fromArray($paymentMethod);
     }, $paymentMethods);
-    echo $this->templateRenderer->render("paymentmethods::index", ['paymentMethods' => $paymentMethods]);
+    $toast = $this->getToast();
+    echo $this->templateRenderer->render("paymentmethods::index", ['paymentMethods' => $paymentMethods, "toast" => $toast]);
   }
 
   public function show($id): object
@@ -51,6 +54,8 @@ class PaymentMethodController extends BaseController
       // PDO
       if (empty($data->getName())) {
         echo $this->templateRenderer->render("paymentmethods::create", ['formError' => 'El nombre no puede estar vacío']);
+      } else if ($this->isDuplicateName(name: $data->getName(), id: $data->getId())) {
+        echo $this->templateRenderer->render("paymentmethods::create", ['formError' => 'Ya existe un registro con el nombre proporcionado']);
       } else {
         $query = $this->dbConnection->prepare("INSERT INTO payment_method (name, description, state) VALUES (:name, :description, :state)");
         $name = $data->getName();
@@ -61,6 +66,7 @@ class PaymentMethodController extends BaseController
         $query->bindParam(":state", $state, \PDO::PARAM_BOOL);
         $query->execute();
         $data->setId($this->dbConnection->lastInsertId());
+        $this->setToast("Guardado correctamente", ToastType::SUCCESS);
         header("location: paymentmethods");
       }
     } else {
@@ -82,7 +88,11 @@ class PaymentMethodController extends BaseController
 
   public function update($data)
   { 
-    if ($data->getName() != "" ) {
+    if (empty($data->getName())) {
+      echo $this->templateRenderer->render('paymentmethods::edit', ['formError' => "El nombre no puede estar vacío", "paymentMethod" => $data]);
+    } else if ($this->isDuplicateName($data->getName(), $data->getId())) {
+      echo $this->templateRenderer->render("paymentmethods::edit", ['formError' => 'Ya existe un registro con el nombre proporcionado', "paymentMethod" => $data]);
+    } else {
       $query = $this->dbConnection->prepare("UPDATE payment_method SET name = :name, description = :description, state = :state WHERE id = :id");
       $id = $data->getId();
       $name = $data->getName();
@@ -93,11 +103,8 @@ class PaymentMethodController extends BaseController
       $query->bindParam(':state', $state, \PDO::PARAM_BOOL);
       $query->bindParam(':id', $id, \PDO::PARAM_INT);
       $query->execute();
+      $this->setToast("Actualizado correctamente", ToastType::SUCCESS);
       header("location: paymentmethods");
-    }
-    else 
-    {
-      echo $this->templateRenderer->render('paymentmethods::edit', ['formError' => "El nombre no puede estar vacío", "paymentMethod" => $data]);
     }
   }
 
@@ -108,7 +115,7 @@ class PaymentMethodController extends BaseController
 
   public function isDuplicateName(string $name, ?int $id = null) {
     $name = strtolower($name);
-    $query = "SELECT * FROM transaction_type WHERE LOWER(name) = :name";
+    $query = "SELECT * FROM payment_method WHERE LOWER(name) = :name";
     $params = [":name" => $name];
     if ($id!= null) {
       $query.= " AND id <> :id";
@@ -120,4 +127,5 @@ class PaymentMethodController extends BaseController
     $count = $query->fetchColumn();  
     return $count > 0;
   }
+  
 }
