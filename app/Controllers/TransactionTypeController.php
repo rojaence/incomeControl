@@ -4,18 +4,23 @@ namespace App\Controllers;
 
 use App\Models\TransactionTypeModel;
 use Utils\TemplateRenderer;
+use Utils\ToastTrait;
+use Constants\ToastType;
+use Utils\Toast;
 
 class TransactionTypeController extends BaseController
 {
+  use ToastTrait;
   private $templateRenderer;
-
+  
   public function index()
   {    
     $query = $this->dbConnection->prepare("SELECT * FROM transaction_type");
     $query->execute();
     $rows = $query->fetchAll(\PDO::FETCH_ASSOC);
     $transactionTypes = array_map(function ($row) { return TransactionTypeModel::fromArray($row); }, $rows);
-    echo $this->templateRenderer->render("transactiontypes::index", ["transactionTypes" => $transactionTypes]);
+    $toast = $this->getToast();
+    echo $this->templateRenderer->render("transactiontypes::index", ["transactionTypes" => $transactionTypes, "toast" => $toast]);
   }
 
   public function show($id)
@@ -35,7 +40,6 @@ class TransactionTypeController extends BaseController
   {
     if ($data instanceof TransactionTypeModel)
     {
-
       if (empty($data->getName())) {
         echo $this->templateRenderer->render("transactiontypes::create", ['formError' => 'El nombre no puede estar vacío']);
       } else if ($this->isDuplicateName(name: $data->getName(), id: $data->getId())) {
@@ -50,6 +54,7 @@ class TransactionTypeController extends BaseController
         $query->bindParam(":state", $state, \PDO::PARAM_BOOL);
         $query->execute();
         $data->setId($this->dbConnection->lastInsertId());
+        $this->setToast("Agregado correctamente", ToastType::SUCCESS);
         header("location: transactiontypes");
       }
     } else {
@@ -86,6 +91,7 @@ class TransactionTypeController extends BaseController
       $query->bindParam(':state', $state, \PDO::PARAM_BOOL);
       $query->bindParam(':id', $id, \PDO::PARAM_INT);
       $query->execute();
+      $this->setToast("Actualizado correctamente", ToastType::SUCCESS);
       header("location: transactiontypes");
     }
   }

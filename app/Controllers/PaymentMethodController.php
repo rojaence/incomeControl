@@ -18,8 +18,7 @@ class PaymentMethodController extends BaseController
     $paymentMethods = array_map(function ($paymentMethod) {
       return PaymentMethodModel::fromArray($paymentMethod);
     }, $paymentMethods);
-    $toast = ["message" => "Mensaje de prueba"];
-    echo $this->templateRenderer->render("paymentmethods::index", ['paymentMethods' => $paymentMethods, "toast" => $toast]);
+    echo $this->templateRenderer->render("paymentmethods::index", ['paymentMethods' => $paymentMethods]);
   }
 
   public function show($id): object

@@ -24,12 +24,16 @@ $resource = $slug[0] === "" ? "/" : $slug[0];
 $routeId = $slug[1] ?? null;
 $dataId = $slug[2]  ?? null;
 
+// Session start para usar toast
+session_start();
+
 // Instancia del motor de plantillas
 $templates = new League\Plates\Engine(__DIR__ . "/.." . '/resources/templates');
 $templates->addFolder('paymentmethods', __DIR__ . "/.." . "/resources/templates/paymentmethods");
 $templates->addFolder('transactiontypes', __DIR__ . "/.." . "/resources/templates/transactiontypes");
 $templates->addFolder('incomes', __DIR__ . "/.." . "/resources/templates/incomes");
 $templates->addFolder('withdrawals', __DIR__ . "/.." . "/resources/templates/withdrawals");
+$templates->addFolder('partials', __DIR__ . "/.." . "/resources/partials");
 $homePage = new League\Plates\Template\Template($templates, 'home');
 
 // Instancia del router
