@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Repositories\PaymentMethodRepository;
+use App\Repositories\TransactionTypeRepository;
+
 class WithdrawalModel
 {
   private ?int $id;
@@ -157,5 +160,17 @@ class WithdrawalModel
     } else {
       throw new \InvalidArgumentException("El array no contiene los atributos requeridos");
     }
+  }
+
+  public function getPaymentMethodName()
+  {
+    $repository = new PaymentMethodRepository();
+    return $repository->getPaymentMethodNameById($this->paymentMethodId);
+  }
+
+  public function getTransactionTypeName()
+  {
+    $repository = new TransactionTypeRepository();
+    return $repository->getTransactionTypeNameById($this->transactionTypeId);
   }
 }

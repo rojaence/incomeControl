@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Repositories\PaymentMethodRepository;
+use App\Repositories\TransactionTypeRepository;
+
 class IncomeModel
 {
   private ?int $id;
@@ -21,8 +24,6 @@ class IncomeModel
     $this->paymentMethodId = $paymentMethodId;
     $this->transactionTypeId = $transactionTypeId;
   }
-
-  
 
   /**
    * Get the value of transactionTypeId
@@ -158,5 +159,17 @@ class IncomeModel
     } else {
       throw new \InvalidArgumentException("El array no contiene los atributos requeridos");
     }
+  }
+
+  public function getPaymentMethodName()
+  {
+    $repository = new PaymentMethodRepository();
+    return $repository->getPaymentMethodNameById($this->paymentMethodId);
+  }
+
+  public function getTransactionTypeName()
+  {
+    $repository = new TransactionTypeRepository();
+    return $repository->getTransactionTypeNameById($this->transactionTypeId);
   }
 }

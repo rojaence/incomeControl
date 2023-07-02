@@ -15,6 +15,8 @@
         <th>Monto</th>
         <th>Concepto</th>
         <th>Fecha</th>
+        <th>Método de pago</th>
+        <th>Tipo de transacción</th>
         <th>Acciones</th>
       </tr>
     </thead>
@@ -24,6 +26,8 @@
           <td><?= $income->getAmount() ?></td>
           <td><?= $income->getDescription() ?></td>
           <td><?= $income->getDate() ?></td>
+          <td><?= $income->getPaymentMethodName() ?></td>
+          <td><?= $income->getTransactionTypeName() ?></td>
           <td>
             <div class="d-flex gap-2">
               <a href="#" class="btn btn-success" title="Editar">

@@ -15,6 +15,8 @@
         <th>Monto</th>
         <th>Concepto</th>
         <th>Fecha</th>
+        <th>Método de pago</th>
+        <th>Tipo de transacción</th>
         <th>Acciones</th>
       </tr>
     </thead>
@@ -24,6 +26,8 @@
           <td><?= $withdrawal->getAmount() ?></td>
           <td><?= $withdrawal->getDescription() ?></td>
           <td><?= $withdrawal->getDate() ?></td>
+          <td><?= $withdrawal->getPaymentMethodName() ?></td>
+          <td><?= $withdrawal->getTransactionTypeName() ?></td>
           <td>
             <div class="d-flex gap-2">
               <a href="#" class="btn btn-success" title="Editar">
