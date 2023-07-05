@@ -25,7 +25,26 @@ class Connection
   {
     try
     {
-      $conn = new \PDO("mysql:host={$_ENV['DB_HOST']};dbname={$_ENV['DB_NAME']}", $_ENV['DB_USER'], $_ENV['DB_PASS']);
+      // Verificar si está en entorno de pruebas
+      $environment = $_ENV['ENVIRONMENT'];
+      $host = '';
+      $dbname = '';
+      $user = '';
+      $password = '';
+
+      if ($environment === 'production' ) {
+        $host = $_ENV['DB_HOST'];
+        $dbname = $_ENV['DB_NAME'];
+        $user = $_ENV['DB_USER'];
+        $password = $_ENV['DB_PASS'];
+      } else {
+        $host = $_ENV['DB_HOST_TEST'];
+        $dbname = $_ENV['DB_NAME_TEST'];
+        $user = $_ENV['DB_USER_TEST'];
+        $password = $_ENV['DB_PASS_TEST'];
+      }
+      
+      $conn = new \PDO("mysql:host={$host};dbname={$dbname}", $user, $password);
       $setnames = $conn->prepare("SET NAMES 'utf8'");
       $setnames->execute();
       $this->connection = $conn;

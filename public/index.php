@@ -16,12 +16,6 @@ use Dotenv\Dotenv;
 $dotenv = Dotenv::createImmutable(__DIR__ . '/..');
 $dotenv->load();
 
-if ($_ENV['ENVIRONMENT'] === 'development') {
-  $_ENV['DB_NAME'] = 'personal_finance_test';
-} else if ($_ENV['ENVIRONMENT'] === 'production') {
-  $_ENV['DB_NAME'] = 'personal_finance';
-}
-
 date_default_timezone_set("America/Guayaquil");
 
 // OBTENER LA URL
