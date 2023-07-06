@@ -6,6 +6,9 @@ use App\Controllers\IncomeController;
 use App\Controllers\PaymentMethodController;
 use App\Controllers\TransactionTypeController;
 use App\Controllers\WithdrawalController;
+
+use App\Controllers\BaseController;
+
 use App\Models\PaymentMethodModel;
 use App\Models\TransactionTypeModel;
 use Router\RouterHandler;

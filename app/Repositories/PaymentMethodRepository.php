@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 use Database\PDO\Connection;
+use App\Models\PaymentMethodModel;
 
 class PaymentMethodRepository
 {
@@ -20,5 +21,16 @@ class PaymentMethodRepository
     $query->execute();
     $result = $query->fetch(\PDO::FETCH_ASSOC);
     return $result["name"] ?? null;
+  }
+
+  public function getAll()
+  {
+    $query = $this->dbConnection->prepare("SELECT * FROM payment_method");
+    $query->execute();
+    $paymentMethods = $query->fetchAll(\PDO::FETCH_ASSOC);
+    $paymentMethods = array_map(function ($paymentMethod) {
+      return PaymentMethodModel::fromArray($paymentMethod);
+    }, $paymentMethods);
+    return $paymentMethods;
   }
 }
