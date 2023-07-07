@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Repositories\PaymentMethodRepository;
-use App\Repositories\TransactionTypeRepository;
+use App\Services\PaymentMethodService;
+use App\Services\TransactionTypeService;
 
 class WithdrawalModel
 {
@@ -164,13 +164,13 @@ class WithdrawalModel
 
   public function getPaymentMethodName()
   {
-    $repository = new PaymentMethodRepository();
-    return $repository->getPaymentMethodNameById($this->paymentMethodId);
+    $service = new PaymentMethodService();
+    return $service->getPaymentMethodNameById($this->paymentMethodId);
   }
 
   public function getTransactionTypeName()
   {
-    $repository = new TransactionTypeRepository();
-    return $repository->getTransactionTypeNameById($this->transactionTypeId);
+    $service = new TransactionTypeService();
+    return $service->getTransactionTypeNameById($this->transactionTypeId);
   }
 }

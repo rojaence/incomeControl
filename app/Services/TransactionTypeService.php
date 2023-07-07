@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Services;
 use Database\PDO\Connection;
 
-class TransactionTypeRepository
+class TransactionTypeService
 {
   private $dbConnection;
   

@@ -127,5 +127,4 @@ class PaymentMethodController extends BaseController
     $count = $query->fetchColumn();  
     return $count > 0;
   }
-  
 }
