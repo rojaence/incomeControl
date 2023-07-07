@@ -17,6 +17,7 @@ class BaseTestCase extends TestCase
       $this->dotenv = Dotenv::createImmutable(__DIR__ . '/..');
       $this->dotenv->load();
 
+      $ENV['ENVIROMENT'] = 'development';
       $connection = Connection::getInstance()->getConnection();
       $this->dbConnection = $connection;
   }

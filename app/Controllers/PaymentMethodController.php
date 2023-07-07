@@ -44,13 +44,6 @@ class PaymentMethodController extends BaseController
   public function store($data)
   {
     if ($data instanceof PaymentMethodModel) {
-      // MySQLi
-      /* $query = $this->dbConnection->prepare("INSERT INTO payment_method (name, description) VALUES (?, ?);");
-      $name = $data->getName();
-      $description = $data->getDescription();
-      $query->bind_param("ss", $name, $description);
-      $query->execute(); */
-
       // PDO
       if (empty($data->getName())) {
         echo $this->templateRenderer->render("paymentmethods::create", ['formError' => 'El nombre no puede estar vacío']);
@@ -70,7 +63,7 @@ class PaymentMethodController extends BaseController
         header("location: paymentmethods");
       }
     } else {
-      throw new \Exception("El tipo de data debe ser una instancia de PaymentMethodModel");
+      throw new \Exception("Se esperaba una instancia de PaymentMethodModel");
     }
   }
 
