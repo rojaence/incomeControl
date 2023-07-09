@@ -8,7 +8,7 @@
         <?= $formError ?>
       </div>
     <?php endif; ?>
-    <form action="/paymentmethods" method="post">
+    <form action="/paymentmethods/create" method="post">
       <div class="mb-3">
         <label for="name" class="form-label">Nombre</label>
         <input type="text" class="form-control" name="name" id="name">
@@ -27,7 +27,7 @@
           <i class="bi bi-x-lg"></i>
           Cancelar
         </a>
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn btn-primary" id="submit">
           <i class="bi bi-check-lg"></i>
           Guardar
         </button>

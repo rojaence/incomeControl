@@ -12,24 +12,18 @@ class BaseTestCase extends TestCase
 
   protected function setUp(): void
   {
-      parent::setUp();
+    parent::setUp();
+    $this->dotenv = Dotenv::createImmutable(__DIR__ . '/..');
+    $this->dotenv->load();
 
-      $this->dotenv = Dotenv::createImmutable(__DIR__ . '/..');
-      $this->dotenv->load();
-
-      $ENV['ENVIROMENT'] = 'development';
-      $connection = Connection::getInstance()->getConnection();
-      $this->dbConnection = $connection;
+    $_ENV['ENVIRONMENT'] = 'development';
+    $connection = Connection::getInstance()->getConnection();
+    $this->dbConnection = $connection;
   }
 
   protected function tearDown(): void
   {
     // Reiniciar los valores autoincrementales y eliminar los datos en cada tabla
-    /* $this->dbConnection->execute("TRUNCATE TABLE payment_method");
-    $this->dbConnection->execute("TRUNCATE TABLE transaction_type");
-    $this->dbConnection->execute("TRUNCATE TABLE income");
-    $this->dbConnection->execute("TRUNCATE TABLE withdrawal");
-    $this->dbConnection->disconnect(); */
 
     $disableFKCheck = $this->dbConnection->prepare("SET FOREIGN_KEY_CHECKS=0");
     $enableFKCheck = $this->dbConnection->prepare("SET FOREIGN_KEY_CHECKS=1");
@@ -43,8 +37,8 @@ class BaseTestCase extends TestCase
 
     $disableFKCheck->execute();
     foreach ($truncateStatements as $statement) {
-        $stmt = $this->dbConnection->prepare($statement);
-        $stmt->execute();
+      $stmt = $this->dbConnection->prepare($statement);
+      $stmt->execute();
     }
     $enableFKCheck->execute();
     parent::tearDown();
