@@ -28,7 +28,7 @@
           <i class="bi bi-x-lg"></i>
           Cancelar
         </a>
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn btn-primary" id="submit">
           <i class="bi bi-check-lg"></i>
           Guardar
         </button>

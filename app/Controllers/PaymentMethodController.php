@@ -60,7 +60,7 @@ class PaymentMethodController extends BaseController
         $query->execute();
         $data->setId($this->dbConnection->lastInsertId());
         $this->setToast("Guardado correctamente", ToastType::SUCCESS);
-        header("location: paymentmethods");
+        header("location: /paymentmethods");
       }
     } else {
       throw new \Exception("Se esperaba una instancia de PaymentMethodModel");
@@ -97,7 +97,7 @@ class PaymentMethodController extends BaseController
       $query->bindParam(':id', $id, \PDO::PARAM_INT);
       $query->execute();
       $this->setToast("Actualizado correctamente", ToastType::SUCCESS);
-      header("location: paymentmethods");
+      header("location: /paymentmethods");
     }
   }
 

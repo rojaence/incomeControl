@@ -8,7 +8,7 @@
         <?= $formError ?>
       </div>
     <?php endif; ?>
-    <form action="/transactiontypes" method="post">
+    <form action="/transactiontypes/edit" method="post">
       <div class="mb-3">
         <label for="name" class="form-label">Nombre</label>
         <input type="text" class="form-control" name="name" id="name" value="<?= $transactionType->getName() ?>">
