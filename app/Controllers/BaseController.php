@@ -67,4 +67,13 @@ abstract class BaseController
   {
     
   }
+
+  /**
+   * Redirige a una página
+  */
+  protected function redirectTo(string $url)
+  {
+    header("Location: " . $url);
+    // exit;
+  }
 }

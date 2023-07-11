@@ -3,7 +3,7 @@
 <?php $this->start('mainContent'); ?>
 <div class="row justify-content-center">
   <div class="col-12 col-lg-9 col-xl-8">
-    <?php if ($formError): ?>
+    <?php if (isset($formError)): ?>
       <div class="alert alert-danger" role="alert">
         <?= $formError ?>
       </div>

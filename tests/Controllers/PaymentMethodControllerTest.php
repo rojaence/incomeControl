@@ -1,7 +1,6 @@
 <?php
 
 use App\Controllers\PaymentMethodController;
-use App\Models\PaymentMethodModel;
 use App\Services\PaymentMethodService;
 use Tests\BaseControllerTestCase;
 
@@ -63,10 +62,10 @@ class PaymentMethodControllerTest extends BaseControllerTestCase
     $this->browser->findELement(WebDriverBy::id('submit'))->click();
     
     $alert = $this->browser->findElement(WebDriverBy::cssSelector('.alert'));
-    $this->assertEquals('Ya existe un registro con el nombre proporcionado', $alert->getText());
+    $this->assertEquals("Ya existe un registro con el nombre 'Nombre de ejemplo'", $alert->getText());
   }
 
-  public function testEditForm()
+  public function testEditFormNoExceptions()
   {
     $this->browser->get(BASE_URL . "/paymentmethods/create");
     $this->browser->findElement(WebDriverBy::name('name'))->sendKeys('Nombre de ejemplo');
@@ -77,7 +76,6 @@ class PaymentMethodControllerTest extends BaseControllerTestCase
     $this->browser->wait()->until(
       WebDriverExpectedCondition::urlIs(BASE_URL . '/paymentmethods')
     );
-
     $paymentMethods = $this->service->getAll();
     $sutId = $paymentMethods[0]->getId();
 
@@ -151,7 +149,7 @@ class PaymentMethodControllerTest extends BaseControllerTestCase
     $this->browser->findElement(WebDriverBy::id('submit'))->click();
 
     $alert = $this->browser->findElement(WebDriverBy::className('alert'));
-    $this->assertEquals('Ya existe un registro con el nombre proporcionado', $alert->getText());
+    $this->assertEquals("Ya existe un registro con el nombre 'Nombre de ejemplo 2'", $alert->getText());
 
     $this->browser->get(BASE_URL . '/paymentmethods');
     $this->browser->wait()->until(

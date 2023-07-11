@@ -70,3 +70,12 @@ window.addEventListener('DOMContentLoaded', () => {
     })
   })
 })
+
+// Snackbar
+document.addEventListener('DOMContentLoaded', () => {
+  const toast = document.getElementById('toast')
+  if (toast) {
+    const toastBootstrap = new bootstrap.Toast(toast)
+    toastBootstrap.show()
+  }
+})
