@@ -126,20 +126,39 @@ class PaymentMethodControllerTest extends BaseControllerTestCase
     $paymentMethods = $this->service->getAll();
     $sutId = $paymentMethods[0]->getId();
 
+    // nombre vacio
     $this->browser->get(BASE_URL . "/paymentmethods/edit/" . $sutId);
     $nameInput = $this->browser->findElement(WebDriverBy::name('name'));
     $nameInput->clear();
     $this->browser->findElement(WebDriverBy::id('submit'))->click();
-    $alert = $this->browser->findElement(WebDriverBY::className('alert'));
 
-    // En este caso se muestra la alerta de nombre vacio
+    $alert = $this->browser->findElement(WebDriverBy::className('alert'));
     $this->assertEquals('El nombre no puede estar vacío', $alert->getText());
 
-    // En este caso se muestra la alerta de nombre duplicado
+    $this->browser->get(BASE_URL . '/paymentmethods');
+    $this->browser->wait()->until(
+      WebDriverExpectedCondition::urlIs(BASE_URL . '/paymentmethods')
+    );
+
+    $sut = $this->service->getById($sutId);
+    $this->assertEquals('Nombre de ejemplo', $sut->getName());
+
+    // nombre duplicado
+    $this->browser->get(BASE_URL . "/paymentmethods/edit/" . $sutId);
     $nameInput = $this->browser->findElement(WebDriverBy::name('name'));
+    $nameInput->clear();
     $nameInput->sendKeys('Nombre de ejemplo 2');
     $this->browser->findElement(WebDriverBy::id('submit'))->click();
-    $alert = $this->browser->findElement(WebDriverBY::className('alert'));
+
+    $alert = $this->browser->findElement(WebDriverBy::className('alert'));
     $this->assertEquals('Ya existe un registro con el nombre proporcionado', $alert->getText());
+
+    $this->browser->get(BASE_URL . '/paymentmethods');
+    $this->browser->wait()->until(
+      WebDriverExpectedCondition::urlIs(BASE_URL . '/paymentmethods')
+    );
+
+    $sut = $this->service->getById($sutId);
+    $this->assertEquals('Nombre de ejemplo', $sut->getName());
   }
 }

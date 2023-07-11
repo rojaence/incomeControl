@@ -66,6 +66,12 @@ class PaymentMethodService extends BaseService
     {
       throw new \Exception('Se esperaba una instancia de PaymentMethodModel');
     }
+    if (empty($data->getName())) {
+      throw new EmptyNameException('El nombre no puede estar vacio');
+    }
+    if ($this->isDuplicateName(name: $data->getName(), id: $data->getId())) {
+      throw new DuplicateNameException("Ya existe un registro con el nombre proporcionado");
+    }
     $query = $this->dbConnection->prepare("UPDATE payment_method SET name = :name, description = :description, state = :state WHERE id = :id");
     $id = $data->getId();
     $name = $data->getName();

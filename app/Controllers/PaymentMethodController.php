@@ -2,17 +2,29 @@
 
 namespace App\Controllers;
 
+use App\Exceptions\DataTypeException;
+use App\Exceptions\DuplicateNameException;
+use App\Exceptions\EmptyNameException;
 use App\Models\PaymentMethodModel;
+use App\Services\PaymentMethodService;
 use Utils\TemplateRenderer;
 use Utils\ToastTrait;
 use Constants\ToastType;
+
 
 class PaymentMethodController extends BaseController
 {
   use ToastTrait;
   private $templateRenderer;
+  private $service;
 
-  public function index()
+  public function __construct()
+  {
+    parent::__construct();
+    $this->service = new PaymentMethodService();
+  }
+
+  /* public function index()
   {
     $query = $this->dbConnection->prepare("SELECT * FROM payment_method");
     $query->execute();
@@ -119,5 +131,89 @@ class PaymentMethodController extends BaseController
     $query->execute($params);
     $count = $query->fetchColumn();  
     return $count > 0;
+  } */
+
+
+  public function index()
+  {
+    $paymentMethods = $this->service->getAll();
+    $toast = $this->getToast();
+    echo $this->templateRenderer->render(
+      "paymentmethods::index", 
+      ['paymentMethods' => $paymentMethods, "toast" => $toast]
+    );
+  }
+
+  public function show($id): object
+  {
+    $paymentMethod = $this->service->getById($id);
+    return $paymentMethod;
+  }
+
+  public function edit($id)
+  {
+    $data = $this->service->getById($id);
+    echo $this->templateRenderer->render(
+      "paymentmethods::edit",
+      ["paymentMethod" => $data]);
+  }
+
+  public function store($data)
+  {
+    try {
+      $this->service->create($data);
+      $this->setToast("Guardado correctamente", ToastType::SUCCESS);
+      header("location: /paymentmethods");
+    } catch (EmptyNameException $e) {
+      echo $this->templateRenderer->render(
+        "paymentmethods::create", 
+        ['formError' => 'El nombre no puede estar vacío']);
+    } catch (DuplicateNameException $e) {
+      echo $this->templateRenderer->render(
+        "paymentmethods::create", 
+        ['formError' => 'Ya existe un registro con el nombre proporcionado']);
+    } catch (DataTypeException $e) {
+      throw new \Exception("Se esperaba una instancia de PaymentMethodModel");
+    }
+  }
+
+  public function create()
+  {
+    echo $this->templateRenderer->render('paymentmethods::create');
+  }
+
+  public function destroy($id)
+  {
+    $query = $this->dbConnection->prepare("DELETE FROM payment_method WHERE id = :id");
+    $query->bindParam(':id', $id, \PDO::PARAM_INT);
+    $query->execute();
+  }
+
+  public function update($data)
+  { 
+    try {
+      $this->service->update($data);
+      $this->setToast("Actualizado correctamente", ToastType::SUCCESS);
+      header("location: /paymentmethods");
+    } catch (EmptyNameException $e) {
+      $formData = $this->service->getById($data->getId());
+      echo $this->templateRenderer->render(
+        'paymentmethods::edit',
+        ['formError' => "El nombre no puede estar vacío",
+        "paymentMethod" => $formData]);
+    } catch (DuplicateNameException $e) {
+      $formData = $this->service->getById($data->getId());
+      echo $this->templateRenderer->render(
+        "paymentmethods::edit",
+        ['formError' => 'Ya existe un registro con el nombre proporcionado',
+        "paymentMethod" => $formData]);
+    } catch (DataTypeException $e) {
+      throw new \Exception("Se esperaba una instancia de PaymentMethodModel");
+    }
+  }
+
+  public function setTemplateRenderer(TemplateRenderer $templateRenderer)
+  {
+    $this->templateRenderer = $templateRenderer;
   }
 }
