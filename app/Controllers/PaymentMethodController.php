@@ -76,9 +76,6 @@ class PaymentMethodController extends BaseController
 
   public function destroy($id)
   {
-    $query = $this->dbConnection->prepare("DELETE FROM payment_method WHERE id = :id");
-    $query->bindParam(':id', $id, \PDO::PARAM_INT);
-    $query->execute();
   }
 
   public function update($data)
