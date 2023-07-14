@@ -3,11 +3,19 @@
 namespace App\Controllers;
 
 use App\Models\IncomeModel;
+use App\Services\IncomeService;
 use Utils\TemplateRenderer;
 
 class IncomeController extends BaseController
 {
   private $templateRenderer;
+  private $service;
+
+  public function __construct()
+  {
+    parent::__construct();
+    $this->service = new IncomeService();
+  }
   
   public function index()
   {
@@ -16,8 +24,6 @@ class IncomeController extends BaseController
     $incomes = $query->fetchAll(\PDO::FETCH_ASSOC);
     $incomes = array_map(function ($income) { return IncomeModel::fromArray($income); }, $incomes);
     echo $this->templateRenderer->render("incomes::index", ["incomes" => $incomes]);
-    // require "../resources/views/incomes/index.php";
-    // return $incomes;
   }
 
   public function show($id): object

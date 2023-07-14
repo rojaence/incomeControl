@@ -14,7 +14,6 @@ class IncomeModel
   private int $paymentMethodId;
   private int $transactionTypeId;
 
-
   public function __construct(float $amount, ?string $description, int $paymentMethodId, int $transactionTypeId, string $date = null, ?int $id = null)
   {
     $this->id = $id ?? null;
