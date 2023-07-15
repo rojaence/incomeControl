@@ -5,6 +5,7 @@ use Constants\ToastType;
 
 trait ToastTrait
 {
+
   public function setToast(string $message, string $type = ToastType::INFO) 
   {
     $_SESSION['toast'] = ['message' => $message, 'type' => $type];

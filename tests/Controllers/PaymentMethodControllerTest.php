@@ -2,7 +2,7 @@
 
 use App\Controllers\PaymentMethodController;
 use App\Services\PaymentMethodService;
-use Tests\BaseControllerTestCase;
+use Tests\Controllers\BaseControllerTestCase;
 
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;

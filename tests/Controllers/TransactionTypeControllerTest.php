@@ -2,7 +2,7 @@
 
 use App\Controllers\TransactionTypeController;
 use App\Services\TransactionTypeService;
-use Tests\BaseControllerTestCase;
+use Tests\Controllers\BaseControllerTestCase;
 
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;

@@ -1,17 +1,17 @@
 <?php
 
 namespace Tests;
+
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 
-class BaseControllerTestCase extends BaseTestCase
+trait WebDriverTrait
 {
   protected $serverUrl;
   protected $browser;
   protected $appUrl;
 
-  protected function setUp(): void
+  protected function setUpWebDriver(): void
   {
-    parent::setUp();
     if (!defined('BASE_URL')) {
       define('BASE_URL', 'http://incomecontrol.test');
     }
@@ -20,9 +20,8 @@ class BaseControllerTestCase extends BaseTestCase
     $this->browser = RemoteWebDriver::create($this->serverUrl);
   }
 
-  protected function tearDown(): void
+  protected function tearDownWebDriver(): void
   {
     $this->browser->quit();
-    parent::tearDown();
   }
 }
