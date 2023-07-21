@@ -2,8 +2,7 @@
 
 namespace App\Services;
 use App\Models\TransactionTypeModel;
-use App\Exceptions\EmptyNameException;
-use App\Exceptions\DuplicateNameException;
+use App\Exceptions\InvalidNameException;
 use App\Exceptions\DataTypeException;
 
 class TransactionTypeService extends BaseService
@@ -44,10 +43,10 @@ class TransactionTypeService extends BaseService
       throw new DataTypeException('Se esperaba una instancia de TransactionTypeModel');
     }
     if (empty($data->getName())) {
-      throw new EmptyNameException('El nombre no puede estar vacio');
+      throw new InvalidNameException('El nombre no puede estar vacío');
     }
     if ($this->isDuplicateName(name: $data->getName(), id: $data->getId())) {
-      throw new DuplicateNameException("Ya existe un registro con el nombre proporcionado");
+      throw new InvalidNameException("Ya existe un registro con el nombre '{$data->getName()}'");
     }
     $query = $this->dbConnection->prepare("INSERT INTO transaction_type (name, description, state) VALUES (:name, :description, :state)");
     $name = $data->getName();
@@ -67,10 +66,10 @@ class TransactionTypeService extends BaseService
       throw new \Exception('Se esperaba una instancia de TransactionTypeModel');
     }
     if (empty($data->getName())) {
-      throw new EmptyNameException('El nombre no puede estar vacio');
+      throw new InvalidNameException('El nombre no puede estar vacío');
     }
     if ($this->isDuplicateName(name: $data->getName(), id: $data->getId())) {
-      throw new DuplicateNameException("Ya existe un registro con el nombre proporcionado");
+      throw new InvalidNameException("Ya existe un registro con el nombre '{$data->getName()}'");
     }
     $query = $this->dbConnection->prepare("UPDATE transaction_type SET name = :name, description = :description, state = :state WHERE id = :id");
     $id = $data->getId();

@@ -6,11 +6,10 @@ use App\Controllers\IncomeController;
 use App\Controllers\PaymentMethodController;
 use App\Controllers\TransactionTypeController;
 use App\Controllers\WithdrawalController;
-
-use App\Controllers\BaseController;
-
+use App\Models\IncomeModel;
 use App\Models\PaymentMethodModel;
 use App\Models\TransactionTypeModel;
+use App\Models\WithdrawalModel;
 use Router\RouterHandler;
 use Utils\TemplateRenderer;
 use Dotenv\Dotenv;
@@ -62,14 +61,14 @@ try {
       $method = $_POST["method"] ?? "GET";
       $router->setMethod(strtoupper($method));
       $router->setData($_POST);
-      $router->route(IncomeController::class, $templateRender, $routeId);
+      $router->route(IncomeController::class, $templateRender, $routeId, model: IncomeModel::class, dataId: $dataId);
       break;
   
     case "withdrawals":
       $method = $_POST["method"] ?? "GET";
       $router->setMethod($method);
       $router->setData($_POST);
-      $router->route(WithdrawalController::class, $templateRender, $routeId);
+      $router->route(WithdrawalController::class, $templateRender, $routeId, model: WithdrawalModel::class,dataId: $dataId);
       break;
 
     case "paymentmethods":
@@ -89,7 +88,6 @@ try {
     default:
       echo "404 Not Found";
       break;
-  
   }
 } catch (\Exception $e) {
   $msg = $e->getMessage();

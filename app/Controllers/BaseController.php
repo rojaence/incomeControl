@@ -73,7 +73,7 @@ abstract class BaseController
   */
   protected function redirectTo(string $url)
   {
-    header("Location: " . $url);
-    // exit;
+    header("location: " . $url);
+    exit;
   }
 }

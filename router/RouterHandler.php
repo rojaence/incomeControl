@@ -41,15 +41,15 @@ class RouterHandler
         }
         break;
       case HttpMethod::POST:
-        $data = $model::fromArray($this->data);
-        $resource->store($data);
+        // $data = $model::fromArray($this->data);
+        $resource->store($this->data);
         break;
       case HttpMethod::PUT:
-        $data = $model::fromArray($this->data);
-        $resource->update($data);
+        // $data = $model::fromArray($this->data);
+        $resource->update($this->data);
         break;
       case HttpMethod::DELETE:
-        $resource->delete($routeId);
+        $resource->destroy($dataId);
         break;
     }
   }

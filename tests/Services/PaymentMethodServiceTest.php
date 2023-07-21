@@ -1,8 +1,7 @@
 <?php
 
 use App\Exceptions\DataTypeException;
-use App\Exceptions\DuplicateNameException;
-use App\Exceptions\EmptyNameException;
+use App\Exceptions\InvalidNameException;
 use Tests\BaseTestCase;
 use App\Services\PaymentMethodService;
 use App\Models\PaymentMethodModel;
@@ -72,10 +71,10 @@ class PaymentMethodServiceTest extends BaseTestCase
     $this->service->create($pm2);    
     $this->service->create($pm3);    
 
-    $this->expectException(DuplicateNameException::class);
+    $this->expectException(InvalidNameException::class);
     $this->service->create($pm4);    
 
-    $this->expectException(EmptyNameException::class);
+    $this->expectException(InvalidNameException::class);
     $this->service->create($pm5);    
 
     $this->expectException(DataTypeException::class);

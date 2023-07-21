@@ -1,8 +1,7 @@
 <?php
 
 use App\Exceptions\DataTypeException;
-use App\Exceptions\DuplicateNameException;
-use App\Exceptions\EmptyNameException;
+use App\Exceptions\InvalidNameException;
 use Tests\BaseTestCase;
 use App\Services\TransactionTypeService;
 use App\Models\TransactionTypeModel;
@@ -72,10 +71,10 @@ class TransactionTypeServiceTest extends BaseTestCase
     $this->service->create($tt2);    
     $this->service->create($tt3);    
 
-    $this->expectException(DuplicateNameException::class);
+    $this->expectException(InvalidNameException::class);
     $this->service->create($tt4);    
 
-    $this->expectException(EmptyNameException::class);
+    $this->expectException(InvalidNameException::class);
     $this->service->create($tt5);    
 
     $this->expectException(DataTypeException::class);

@@ -3,8 +3,7 @@
 namespace App\Controllers;
 
 use App\Exceptions\DataTypeException;
-use App\Exceptions\DuplicateNameException;
-use App\Exceptions\EmptyNameException;
+use App\Exceptions\InvalidNameException;
 use App\Models\PaymentMethodModel;
 use App\Services\PaymentMethodService;
 use Utils\TemplateRenderer;
@@ -50,20 +49,17 @@ class PaymentMethodController extends BaseController
 
   public function store($data)
   {
+    $model = null;
     try {
-      $this->service->create($data);
+      $model = PaymentMethodModel::fromArray($data);
+      $this->service->create($model);
       $this->setToast("Guardado correctamente", ToastType::SUCCESS);
       $this->redirectTo('/paymentmethods');
-    } catch (EmptyNameException $e) {
+    } catch (InvalidNameException $e) {
       $this->renderFormWithError(
         form: "create", 
-        errorMessage: "El nombre no puede estar vacío", 
-        formData: $data);
-    } catch (DuplicateNameException $e) {
-      $this->renderFormWithError(
-        form: "create", 
-        errorMessage: "Ya existe un registro con el nombre '{$data->getName()}'", 
-        formData: $data);
+        errorMessage: $e->getMessage(), 
+        formData: $model);
     } catch (DataTypeException $e) {
       throw new \Exception("Se esperaba una instancia de PaymentMethodModel");
     }
@@ -81,24 +77,19 @@ class PaymentMethodController extends BaseController
   public function update($data)
   { 
     try {
-      $this->service->update($data);
-      $this->setToast("Actualizado correctamente", ToastType::SUCCESS);
+      $model = PaymentMethodModel::fromArray($data);
+      $this->service->update($model);
+      $this->setToast("Guardado correctamente", ToastType::SUCCESS);
       $this->redirectTo('/paymentmethods');
-    } catch (EmptyNameException $e) {
-      $formData = $this->service->getById($data->getId());
+    } catch (InvalidNameException $e) {
+      $formData = $this->service->getById($model->getId());
       $this->renderFormWithError(
-        form: "edit", 
-        errorMessage: "El nombre no puede estar vacío", 
-        formData: $formData);
-    } catch (DuplicateNameException $e) {
-      $formData = $this->service->getById($data->getId());
-      $this->renderFormWithError(
-        form: "edit", 
-        errorMessage: "Ya existe un registro con el nombre '{$data->getName()}'", 
+        form: "create", 
+        errorMessage: $e->getMessage(), 
         formData: $formData);
     } catch (DataTypeException $e) {
-      throw new \Exception($e->getMessage());
-    } 
+      throw new \Exception("Se esperaba una instancia de PaymentMethodModel");
+    }
   }
 
   public function renderFormWithError(string $form, string $errorMessage, PaymentMethodModel $formData)

@@ -4,7 +4,7 @@
 
 <?php $this->start('mainContent'); ?>
   <div class="d-flex justify-content-end">
-    <a href="#" class="btn btn-primary">
+    <a href="/incomes/create" class="btn btn-primary">
       <i class="bi bi-plus-lg"></i>
       Nuevo
     </a>
@@ -25,21 +25,22 @@
         <tr>
           <td><?= $income->getAmount() ?></td>
           <td><?= $income->getDescription() ?></td>
-          <td><?= $income->getDate() ?></td>
+          <td><?= explode(' ', $income->getDate())[0] ?></td>
           <td><?= $income->getPaymentMethodName() ?></td>
           <td><?= $income->getTransactionTypeName() ?></td>
           <td>
             <div class="d-flex gap-2">
-              <a href="#" class="btn btn-success" title="Editar">
+              <a href="<?= '/incomes/edit/' . $income->getId() ?>" class="btn btn-success" title="Editar">
                 <i class="bi bi-pencil-square"></i>
               </a>      
-              <a href="#" class="btn btn-danger" title="Eliminar">
+              <button class="btn btn-danger" title="Eliminar" onclick="<?= "showDeleteModal({source: 'incomes', id: {$income->getId()}})" ?>">
                 <i class="bi bi-x-lg"></i>
-              </a>
+              </button>
             </div>
           </td>
         </tr> 
       <?php endforeach; ?>
     </tbody>
   </table>
+
 <?php $this->end(); ?>

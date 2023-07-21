@@ -37,7 +37,7 @@ class IncomeService extends BaseService
       throw new InvalidArgumentException('El monto debe ser mayor que cero');
     }
     if (empty(trim($data->getDescription()))) {
-      throw new InvalidArgumentException('La descripciónn no puede estar vacia');
+      throw new InvalidArgumentException('La descripción no puede estar vacía');
     }
     if (empty($data->getPaymentMethodId())) {
       throw new InvalidArgumentException('No se ha establecido un método de pago');
@@ -64,7 +64,7 @@ class IncomeService extends BaseService
       throw new InvalidArgumentException('El monto debe ser mayor que cero');
     }
     if (empty(trim($data->getDescription()))) {
-      throw new InvalidArgumentException('La descripciónn no puede estar vacia');
+      throw new InvalidArgumentException('La descripción no puede estar vacia');
     }
     if (empty($data->getPaymentMethodId())) {
       throw new InvalidArgumentException('No se ha establecido un método de pago');

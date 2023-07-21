@@ -2,8 +2,7 @@
 
 namespace App\Services;
 use App\Models\PaymentMethodModel;
-use App\Exceptions\EmptyNameException;
-use App\Exceptions\DuplicateNameException;
+use App\Exceptions\InvalidNameException;
 use App\Exceptions\DataTypeException;
 
 class PaymentMethodService extends BaseService
@@ -44,10 +43,13 @@ class PaymentMethodService extends BaseService
       throw new DataTypeException('Se esperaba una instancia de PaymentMethodModel');
     }
     if (empty($data->getName())) {
-      throw new EmptyNameException('El nombre no puede estar vacio');
+      throw new InvalidNameException('El nombre no puede estar vacío');
+    }
+    if (is_numeric($data->getName())) {
+      throw new InvalidNameException('El nombre no puede ser un número');
     }
     if ($this->isDuplicateName(name: $data->getName(), id: $data->getId())) {
-      throw new DuplicateNameException("Ya existe un registro con el nombre proporcionado");
+      throw new InvalidNameException("Ya existe un registro con el nombre '{$data->getName()}'");
     }
     $query = $this->dbConnection->prepare("INSERT INTO payment_method (name, description, state) VALUES (:name, :description, :state)");
     $name = $data->getName();
@@ -67,10 +69,10 @@ class PaymentMethodService extends BaseService
       throw new \Exception('Se esperaba una instancia de PaymentMethodModel');
     }
     if (empty($data->getName())) {
-      throw new EmptyNameException('El nombre no puede estar vacio');
+      throw new InvalidNameException('El nombre no puede estar vacío');
     }
     if ($this->isDuplicateName(name: $data->getName(), id: $data->getId())) {
-      throw new DuplicateNameException("Ya existe un registro con el nombre proporcionado");
+      throw new InvalidNameException("Ya existe un registro con el nombre '{$data->getName()}'");
     }
     $query = $this->dbConnection->prepare("UPDATE payment_method SET name = :name, description = :description, state = :state WHERE id = :id");
     $id = $data->getId();

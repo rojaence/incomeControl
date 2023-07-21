@@ -80,10 +80,7 @@ body {
 
 @media (min-width: 768px) {
   .sidebar {
-    position: static;
-    top: 0;
-    left: 0;
-    height: 100vh;
+    height: 100%;
     width: 15.625rem;
     grid-area: sidebar;
   }
@@ -104,4 +101,18 @@ body {
   .footer {
     grid-area: footer;
   }
+}
+
+/* SWEETALERT */
+.swal2-actions {
+  gap: 0.8rem;
+}
+
+.swal2-modal {
+  background: var(--bs-body-bg) !important;
+}
+
+.swal2-title,
+.swal2-content {
+  color: var(--bs-body-color) !important;
 }
