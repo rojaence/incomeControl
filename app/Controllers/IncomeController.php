@@ -78,26 +78,17 @@ class IncomeController extends BaseController
     }
   }
 
-  /* public function destroy($id)
-  {
-    try {
-      $this->incomeService->delete($id);
-      $this->setToast('Registro eliminado', ToastType::SUCCESS);
-    } catch (\PDOException $e) {
-      $this->setToast('Ha ocurrido un error', ToastType::DANGER);
-    } finally {
-      $this->redirectTo('/incomes');
-    }
-  } */
-
   public function update($data)
   {
+    $id = $data['id'];
+    $model = null;
     try {
-      $this->incomeService->update($data);
+      $model = IncomeModel::fromArray($data);
+      $this->incomeService->update($model);
       $this->setToast("Actualizado correctamente", ToastType::SUCCESS);
       $this->redirectTo('/incomes');
     } catch (\InvalidArgumentException $e) {
-      $formData = $this->incomeService->getById($data->getId());
+      $formData = $this->incomeService->getById($id);
       $this->renderFormWithError(
         form: "edit", 
         errorMessage: $e->getMessage(), 

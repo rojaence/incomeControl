@@ -77,8 +77,6 @@ class IncomeControllerTest extends BaseDataControllerTestCase
     $alert = $this->browser->findElement(WebDriverBy::className('alert'));
     $this->assertEquals("La descripción no puede estar vacía", $alert->getText());
     $this->assertCount(0, $this->incomeService->getAll());
-
-    
   }
 
   public function testStoreAmountException() 
@@ -132,7 +130,7 @@ class IncomeControllerTest extends BaseDataControllerTestCase
   }
 
   // TODO: Implement tests to Form Exceptions and Delete Controller function
-  /* public function testUpdateAmountExceptions() 
+  public function testUpdateAmountException() 
   {
     $this->browser->get(BASE_URL . "/incomes/create" );
     $this->browser->findElement(WebDriverBy::name('description'))->sendKeys('Description');
@@ -151,45 +149,102 @@ class IncomeControllerTest extends BaseDataControllerTestCase
     $this->browser->findElement(WebDriverBy::id('income-form'))->submit();
 
     $this->browser->wait()->until(
-      WebDriverExpectedCondition::urlIs(BASE_URL . '/incomes/edit/1')
+      WebDriverExpectedCondition::urlIs(BASE_URL . '/incomes/edit')
     );
     
     $sut = $this->incomeService->getById(1);
-    $this->assertEquals(20, $sut->getAmount());
-    
     $alert = $this->browser->findElement(WebDriverBy::className('alert'));
-    $this->assertEquals('El monto debe ser mayor que cero', $alert->getText());
-  } */
 
-  /* public function testDeleteIncome()
+    $this->assertEquals(20, $sut->getAmount());
+    $this->assertEquals('El valor del monto no es válido', $alert->getText());
+  }
+
+  public function testUpdateInvalidAmountException() 
   {
     $this->browser->get(BASE_URL . "/incomes/create" );
     $this->browser->findElement(WebDriverBy::name('description'))->sendKeys('Description');
     $this->browser->findElement(WebDriverBy::name('amount'))->sendKeys(20);
     $this->browser->findElement(WebDriverBy::id('income-form'))->submit();
-  
+
     $this->browser->wait()->until(
       WebDriverExpectedCondition::urlIs(BASE_URL . '/incomes')
     );
-  
-    $this->browser->get(BASE_URL . "/incomes/create" );
-    $this->browser->findElement(WebDriverBy::name('description'))->sendKeys('Description 2');
-    $this->browser->findElement(WebDriverBy::name('amount'))->sendKeys(20);
-    $paymentMethod = $this->browser->findElement(WebDriverBy::name('payment_method_id'));
-    $transactionType = $this->browser->findElement(WebDriverBy::name('transaction_type_id'));
+    
+    $this->browser->get(BASE_URL . '/incomes/edit/1');
 
-    $this->browser->executeScript("arguments[0].setAttribute('value', '2')", [$paymentMethod]);
-    $this->browser->executeScript("arguments[0].setAttribute('value', '3')", [$transactionType]);
-
+    $amountInput = $this->browser->findElement(WebDriverBy::name('amount'));
+    $amountInput->clear();
 
     $this->browser->findElement(WebDriverBy::id('income-form'))->submit();
-  
+
+    $this->browser->wait()->until(
+      WebDriverExpectedCondition::urlIs(BASE_URL . '/incomes/edit')
+    );
+    
+    $sut = $this->incomeService->getById(1);
+    $alert = $this->browser->findElement(WebDriverBy::className('alert'));
+
+    $this->assertEquals(20, $sut->getAmount());
+    $this->assertEquals('El valor del monto no es válido', $alert->getText());
+  }
+
+  public function testUpdateAmountNegativeException() {
+
+    $this->browser->get(BASE_URL . "/incomes/create" );
+    $this->browser->findElement(WebDriverBy::name('description'))->sendKeys('Description');
+    $this->browser->findElement(WebDriverBy::name('amount'))->sendKeys(20);
+    $this->browser->findElement(WebDriverBy::id('income-form'))->submit();
+
     $this->browser->wait()->until(
       WebDriverExpectedCondition::urlIs(BASE_URL . '/incomes')
     );
+    
+    $this->browser->get(BASE_URL . '/incomes/edit/1');
 
-    $this->assertCount(2, $this->incomeService->getAll());
-  } */
+    $amountInput = $this->browser->findElement(WebDriverBy::name('amount'));
+    $amountInput->clear();
+    $amountInput->sendKeys(-10);
+
+    $this->browser->findElement(WebDriverBy::id('income-form'))->submit();
+
+    $this->browser->wait()->until(
+      WebDriverExpectedCondition::urlIs(BASE_URL . '/incomes/edit')
+    );
+    
+    $sut = $this->incomeService->getById(1);
+    $alert = $this->browser->findElement(WebDriverBy::className('alert'));
+
+    $this->assertEquals(20, $sut->getAmount());
+    $this->assertEquals('El monto debe ser mayor que cero', $alert->getText());
+  }
+
+  public function testUpdateDescriptionException() {
+    $this->browser->get(BASE_URL . "/incomes/create" );
+    $this->browser->findElement(WebDriverBy::name('description'))->sendKeys('Description');
+    $this->browser->findElement(WebDriverBy::name('amount'))->sendKeys(20);
+    $this->browser->findElement(WebDriverBy::id('income-form'))->submit();
+
+    $this->browser->wait()->until(
+      WebDriverExpectedCondition::urlIs(BASE_URL . '/incomes')
+    );
+    
+    $this->browser->get(BASE_URL . '/incomes/edit/1');
+
+    $descriptionInput = $this->browser->findElement(WebDriverBy::name('description'));
+    $descriptionInput->clear();
+
+    $this->browser->findElement(WebDriverBy::id('income-form'))->submit();
+
+    $this->browser->wait()->until(
+      WebDriverExpectedCondition::urlIs(BASE_URL . '/incomes/edit')
+    );
+    
+    $sut = $this->incomeService->getById(1);
+    $alert = $this->browser->findElement(WebDriverBy::className('alert'));
+
+    $this->assertEquals('Description', $sut->getDescription());
+    $this->assertEquals('La descripción no puede estar vacía', $alert->getText());
+  }
 }
 
 
