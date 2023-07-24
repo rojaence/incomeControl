@@ -82,9 +82,13 @@ class WithdrawalController extends BaseController
 
   public function destroy($id)
   {
-    $query = $this->dbConnection->prepare("DELETE FROM withdrawal WHERE id = :id");
-    $query->bindParam(':id', $id, \PDO::PARAM_INT);
-    $query->execute();
+    try {
+      $this->withdrawalService->delete($id);
+      $response = array('deleted' => true);
+    } catch (\PDOException $e){
+      $response = array('deleted' => false);
+    }
+    echo json_encode($response);
   }
 
   public function update($data)

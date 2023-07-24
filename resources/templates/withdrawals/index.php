@@ -33,9 +33,9 @@
               <a href="<?= "withdrawals/edit/" . $withdrawal->getId() ?>" class="btn btn-success" title="Editar">
                 <i class="bi bi-pencil-square"></i>
               </a>      
-              <a href="#" class="btn btn-danger" title="Eliminar">
+              <button class="btn btn-danger" title="Eliminar" onclick="<?= "showDeleteModal({source: 'withdrawals', id: {$withdrawal->getId()}})" ?>">
                 <i class="bi bi-x-lg"></i>
-              </a>
+              </button>
             </div>
           </td>
         </tr> 

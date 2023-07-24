@@ -1,7 +1,6 @@
 <?php
 
 use App\Controllers\WithdrawalController;
-use App\Models\WithdrawalModel;
 use App\Services\WithdrawalService;
 
 use Tests\Controllers\BaseDataControllerTestCase;
