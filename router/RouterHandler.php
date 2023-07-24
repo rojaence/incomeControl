@@ -12,7 +12,7 @@ class RouterHandler
 
   public function setMethod(string $method)
   {
-    $this->method = $method;
+    $this->method = strtoupper($method);
   }
 
   public function setData(array $data)
@@ -41,11 +41,9 @@ class RouterHandler
         }
         break;
       case HttpMethod::POST:
-        // $data = $model::fromArray($this->data);
         $resource->store($this->data);
         break;
       case HttpMethod::PUT:
-        // $data = $model::fromArray($this->data);
         $resource->update($this->data);
         break;
       case HttpMethod::DELETE:

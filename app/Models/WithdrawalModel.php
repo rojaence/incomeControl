@@ -15,7 +15,7 @@ class WithdrawalModel
   private int $transactionTypeId;
 
 
-  public function __construct(float $amount, ?string $description, int $paymentMethodId, int $transactionTypeId, string $date = null, ?int $id = null)
+  public function __construct(float $amount = 0, ?string $description, int $paymentMethodId, int $transactionTypeId, string $date = null, ?int $id = null)
   {
     $this->id = $id ?? null;
     $this->date = $date ?? date("Y-m-d\TH:i:s");
@@ -148,7 +148,9 @@ class WithdrawalModel
 
   public static function fromArray(array $data)
   {
-    if (isset($data['amount'], $data['description'], $data['payment_method_id'], $data['transaction_type_id']))
+    if (!is_numeric($data['amount'])) {
+      throw new \InvalidArgumentException("El valor del monto no es válido");
+    } else if (isset($data['amount'], $data['description'], $data['payment_method_id'], $data['transaction_type_id']))
     {
       $amount = $data['amount'];
       $description = $data['description'];
@@ -158,7 +160,7 @@ class WithdrawalModel
       $id = $data['id'] ?? null;
       return new self($amount, $description, $paymentMethodId, $transactionTypeId, $date, $id);
     } else {
-      throw new \InvalidArgumentException("El array no contiene los atributos requeridos");
+      throw new \InvalidArgumentException("Los datos no son correctos");
     }
   }
 

@@ -11,7 +11,7 @@
     <form action="/transactiontypes/create" method="post">
       <div class="mb-3">
         <label for="name" class="form-label">Nombre</label>
-        <input type="text" class="form-control" name="name" id="name">
+        <input type="text" class="form-control" name="name" id="name" autofocus>
       </div>
       <div class="mb-3 ">
         <label for="description" class="form-label">Descripción</label>

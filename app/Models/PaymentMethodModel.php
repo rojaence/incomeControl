@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Exceptions\InvalidNameException;
+
 class PaymentMethodModel
 {
   protected ?int $id;

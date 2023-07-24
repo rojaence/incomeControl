@@ -4,7 +4,7 @@
 
 <?php $this->start('mainContent'); ?>
   <div class="d-flex justify-content-end">
-    <a href="#" class="btn btn-primary">
+    <a href="/withdrawals/create" class="btn btn-primary">
       <i class="bi bi-plus-lg"></i>
       Nuevo
     </a>

@@ -10,8 +10,6 @@ class BaseTestCase extends TestCase
   protected $dotenv;
   protected $dbConnection;
 
-  
-
   protected function setUp(): void
   {
     parent::setUp();

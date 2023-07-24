@@ -59,7 +59,7 @@ try {
   
     case "incomes":
       $method = $_POST["method"] ?? "GET";
-      $router->setMethod(strtoupper($method));
+      $router->setMethod($method);
       $router->setData($_POST);
       $router->route(IncomeController::class, $templateRender, $routeId, model: IncomeModel::class, dataId: $dataId);
       break;
@@ -68,19 +68,19 @@ try {
       $method = $_POST["method"] ?? "GET";
       $router->setMethod($method);
       $router->setData($_POST);
-      $router->route(WithdrawalController::class, $templateRender, $routeId, model: WithdrawalModel::class,dataId: $dataId);
+      $router->route(WithdrawalController::class, $templateRender, $routeId, model: WithdrawalModel::class, dataId: $dataId);
       break;
 
     case "paymentmethods":
       $method = $_POST["method"] ?? "GET";
-      $router->setMethod(strtoupper($method));
+      $router->setMethod($method);
       $router->setData($_POST);
       $router->route(PaymentMethodController::class, $templateRender, $routeId, model: PaymentMethodModel::class, dataId: $dataId);
       break;
   
     case "transactiontypes":
       $method = $_POST["method"] ?? "GET";
-      $router->setMethod(strtoupper($method));
+      $router->setMethod($method);
       $router->setData($_POST);
       $router->route(TransactionTypeController::class, $templateRender, $routeId, model: TransactionTypeModel::class, dataId: $dataId);
       break;

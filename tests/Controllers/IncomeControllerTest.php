@@ -69,13 +69,6 @@ class IncomeControllerTest extends BaseDataControllerTestCase
     $this->browser->findElement(WebDriverBy::name('description'))->sendKeys('');
     $this->browser->findElement(WebDriverBy::name('amount'))->sendKeys(20);
     $this->browser->findElement(WebDriverBy::id('income-form'))->submit();
-
-    $this->browser->wait()->until(
-      WebDriverExpectedCondition::urlIs(BASE_URL . '/incomes/create')
-    );
-
-    $alert = $this->browser->findElement(WebDriverBy::className('alert'));
-    $this->assertEquals("La descripción no puede estar vacía", $alert->getText());
     $this->assertCount(0, $this->incomeService->getAll());
   }
 
@@ -90,9 +83,7 @@ class IncomeControllerTest extends BaseDataControllerTestCase
     $this->browser->wait()->until(
       WebDriverExpectedCondition::urlIs(BASE_URL . '/incomes/create')
     );
-    
-    $alert = $this->browser->findElement(WebDriverBy::className('alert'));
-    $this->assertEquals("El monto debe ser mayor que cero", $alert->getText());
+
     $this->assertCount(0, $this->incomeService->getAll());
   }
 

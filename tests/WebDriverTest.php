@@ -1,9 +1,9 @@
 <?php
 
-use Tests\BaseControllerTestCase;
+use Tests\Controllers\BaseControllerTestCase;
 use Facebook\WebDriver\WebDriverBy;
 
-class WebDriverTest extends BaseControllerTestCase
+class WebDriverTest extends BaseCOntrollerTestCase
 {
   public function testCanAccessBrowser()
   {

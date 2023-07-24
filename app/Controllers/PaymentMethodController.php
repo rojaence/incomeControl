@@ -49,7 +49,6 @@ class PaymentMethodController extends BaseController
 
   public function store($data)
   {
-    $model = null;
     try {
       $model = PaymentMethodModel::fromArray($data);
       $this->service->create($model);
@@ -59,7 +58,7 @@ class PaymentMethodController extends BaseController
       $this->renderFormWithError(
         form: "create", 
         errorMessage: $e->getMessage(), 
-        formData: $model);
+        formData: $data);
     } catch (DataTypeException $e) {
       throw new \Exception("Se esperaba una instancia de PaymentMethodModel");
     }
@@ -92,7 +91,7 @@ class PaymentMethodController extends BaseController
     }
   }
 
-  public function renderFormWithError(string $form, string $errorMessage, PaymentMethodModel $formData)
+  public function renderFormWithError(string $form, string $errorMessage, $formData = null)
   {
     echo $this->templateRenderer->render(
       "paymentmethods::$form",

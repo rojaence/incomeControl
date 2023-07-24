@@ -9,7 +9,6 @@ use App\Services\TransactionTypeService;
 use App\Exceptions\DataTypeException;
 use Utils\ToastTrait;
 use Constants\ToastType;
-use LogicException;
 use Utils\TemplateRenderer;
 
 class IncomeController extends BaseController
@@ -31,7 +30,8 @@ class IncomeController extends BaseController
   public function index()
   {
     $incomes = $this->incomeService->getAll();
-    echo $this->templateRenderer->render("incomes::index", ["incomes" => $incomes]);
+    $toast = $this->getToast();
+    echo $this->templateRenderer->render("incomes::index", ["incomes" => $incomes,  "toast" => $toast]);
   }
 
   public function show($id): object
@@ -62,7 +62,6 @@ class IncomeController extends BaseController
 
   public function store($data)
   {
-    $model = null;
     try {
       $model = IncomeModel::fromArray($data);
       $this->incomeService->create($model);
@@ -72,7 +71,7 @@ class IncomeController extends BaseController
       $this->renderFormWithError(
         form: "create", 
         errorMessage: $e->getMessage(), 
-        formData: $model);
+        formData: $data);
     } catch ( DataTypeException $e ) {
       throw new \Exception($e->getMessage());
     }
@@ -81,7 +80,6 @@ class IncomeController extends BaseController
   public function update($data)
   {
     $id = $data['id'];
-    $model = null;
     try {
       $model = IncomeModel::fromArray($data);
       $this->incomeService->update($model);
@@ -98,7 +96,7 @@ class IncomeController extends BaseController
     }
   }
 
-  public function renderFormWithError(string $form, string $errorMessage, IncomeModel $formData)
+  public function renderFormWithError(string $form, string $errorMessage, $formData)
   {
     $paymentMethods = $this->paymentMethodService->getAll();
     $transactionTypes = $this->transactionTypeService->getAll();

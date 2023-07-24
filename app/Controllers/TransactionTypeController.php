@@ -50,7 +50,7 @@ class TransactionTypeController extends BaseController
       $this->renderFormWithError(
         form: "create", 
         errorMessage: $e->getMessage(), 
-        formData: $model);
+        formData: $data);
     } catch (DataTypeException $e) {
       throw new \Exception("Se esperaba una instancia de TransactionTypeModel");
     }
@@ -67,7 +67,6 @@ class TransactionTypeController extends BaseController
 
   public function update($data)
   {
-    $model = null;
     try {
       $model = TransactionTypeModel::fromArray($data);
       $this->service->update($model);
@@ -89,7 +88,7 @@ class TransactionTypeController extends BaseController
     $this->templateRenderer = $templateRenderer;
   }
 
-  public function renderFormWithError(string $form, string $errorMessage, TransactionTypeModel $formData)
+  public function renderFormWithError(string $form, string $errorMessage, $formData)
   {
     echo $this->templateRenderer->render(
       "transactiontypes::$form",

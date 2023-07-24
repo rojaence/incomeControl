@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Services\PaymentMethodService;
 use App\Services\TransactionTypeService;
-use InvalidArgumentException;
 
 class IncomeModel
 {
