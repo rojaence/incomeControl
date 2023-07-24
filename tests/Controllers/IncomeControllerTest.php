@@ -120,7 +120,6 @@ class IncomeControllerTest extends BaseDataControllerTestCase
     $this->assertEquals(200, $sut->getAmount());
   }
 
-  // TODO: Implement tests to Form Exceptions and Delete Controller function
   public function testUpdateAmountException() 
   {
     $this->browser->get(BASE_URL . "/incomes/create" );

@@ -77,4 +77,134 @@ class WithdrawalControllerTest extends BaseDataControllerTestCase
     
     $this->assertCount(0, $this->withdrawalService->getAll());
   }
+
+  public function testStoreAmountException() 
+  {
+    // Amount <= 0
+    $this->browser->get(BASE_URL . "/withdrawals/create" );
+    $this->browser->findElement(WebDriverBy::name('description'))->sendKeys('Description');
+    $this->browser->findElement(WebDriverBy::name('amount'))->sendKeys(0);
+    $this->browser->findElement(WebDriverBy::id('withdrawal-form'))->submit();
+    $this->assertCount(0, $this->withdrawalService->getAll());
+  }
+
+  public function testUpdate() 
+  {
+    $this->browser->get(BASE_URL . "/withdrawals/create" );
+    $this->browser->findElement(WebDriverBy::name('description'))->sendKeys('Description');
+    $this->browser->findElement(WebDriverBy::name('amount'))->sendKeys(20);
+    $this->browser->findElement(WebDriverBy::id('withdrawal-form'))->submit();
+
+    $this->browser->wait()->until(
+      WebDriverExpectedCondition::urlIs(BASE_URL . '/withdrawals')
+    );
+    
+    $this->browser->get(BASE_URL . '/withdrawals/edit/1');
+
+    $descriptionInput = $this->browser->findElement(WebDriverBy::name('description'));
+    $descriptionInput->clear();
+    $descriptionInput->sendKeys('Another description');
+
+    $amountInput = $this->browser->findElement(WebDriverBy::name('amount'));
+    $amountInput->clear();
+    $amountInput->sendKeys(200);
+
+    $this->browser->findElement(WebDriverBy::id('withdrawal-form'))->submit();
+
+    $this->browser->wait()->until(
+      WebDriverExpectedCondition::urlIs(BASE_URL . '/withdrawals')
+    );
+    
+    $sut = $this->withdrawalService->getById(1);
+    
+    $this->assertEquals('Another description', $sut->getDescription());
+    $this->assertEquals(200, $sut->getAmount());
+  }
+
+  public function testUpdateAmountException() 
+  {
+    $this->browser->get(BASE_URL . "/withdrawals/create" );
+    $this->browser->findElement(WebDriverBy::name('description'))->sendKeys('Description');
+    $this->browser->findElement(WebDriverBy::name('amount'))->sendKeys(20);
+    $this->browser->findElement(WebDriverBy::id('withdrawal-form'))->submit();
+
+    $this->browser->wait()->until(
+      WebDriverExpectedCondition::urlIs(BASE_URL . '/withdrawals')
+    );
+    
+    $this->browser->get(BASE_URL . '/withdrawals/edit/1');
+
+    $amountInput = $this->browser->findElement(WebDriverBy::name('amount'));
+    $amountInput->clear();
+
+    $this->browser->findElement(WebDriverBy::id('withdrawal-form'))->submit();
+
+    $this->browser->wait()->until(
+      WebDriverExpectedCondition::urlIs(BASE_URL . '/withdrawals/edit')
+    );
+    
+    $sut = $this->withdrawalService->getById(1);
+    $alert = $this->browser->findElement(WebDriverBy::className('alert'));
+
+    $this->assertEquals(20, $sut->getAmount());
+    $this->assertEquals('El valor del monto no es válido', $alert->getText());
+  }
+
+  public function testUpdateAmountNegativeException() {
+
+    $this->browser->get(BASE_URL . "/withdrawals/create" );
+    $this->browser->findElement(WebDriverBy::name('description'))->sendKeys('Description');
+    $this->browser->findElement(WebDriverBy::name('amount'))->sendKeys(20);
+    $this->browser->findElement(WebDriverBy::id('withdrawal-form'))->submit();
+
+    $this->browser->wait()->until(
+      WebDriverExpectedCondition::urlIs(BASE_URL . '/withdrawals')
+    );
+    
+    $this->browser->get(BASE_URL . '/withdrawals/edit/1');
+
+    $amountInput = $this->browser->findElement(WebDriverBy::name('amount'));
+    $amountInput->clear();
+    $amountInput->sendKeys(-10);
+
+    $this->browser->findElement(WebDriverBy::id('withdrawal-form'))->submit();
+
+    $this->browser->wait()->until(
+      WebDriverExpectedCondition::urlIs(BASE_URL . '/withdrawals/edit')
+    );
+    
+    $sut = $this->withdrawalService->getById(1);
+    $alert = $this->browser->findElement(WebDriverBy::className('alert'));
+
+    $this->assertEquals(20, $sut->getAmount());
+    $this->assertEquals('El monto debe ser mayor que cero', $alert->getText());
+  }
+
+  public function testUpdateDescriptionException() {
+    $this->browser->get(BASE_URL . "/withdrawals/create" );
+    $this->browser->findElement(WebDriverBy::name('description'))->sendKeys('Description');
+    $this->browser->findElement(WebDriverBy::name('amount'))->sendKeys(20);
+    $this->browser->findElement(WebDriverBy::id('withdrawal-form'))->submit();
+
+    $this->browser->wait()->until(
+      WebDriverExpectedCondition::urlIs(BASE_URL . '/withdrawals')
+    );
+    
+    $this->browser->get(BASE_URL . '/withdrawals/edit/1');
+
+    $descriptionInput = $this->browser->findElement(WebDriverBy::name('description'));
+    $descriptionInput->clear();
+
+    $this->browser->findElement(WebDriverBy::id('withdrawal-form'))->submit();
+
+    $this->browser->wait()->until(
+      WebDriverExpectedCondition::urlIs(BASE_URL . '/withdrawals/edit')
+    );
+    
+    $sut = $this->withdrawalService->getById(1);
+    $alert = $this->browser->findElement(WebDriverBy::className('alert'));
+
+    $this->assertEquals('Description', $sut->getDescription());
+    $this->assertEquals('La descripción no puede estar vacía', $alert->getText());
+  }
 }

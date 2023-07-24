@@ -30,7 +30,7 @@
           <td><?= $withdrawal->getTransactionTypeName() ?></td>
           <td>
             <div class="d-flex gap-2">
-              <a href="#" class="btn btn-success" title="Editar">
+              <a href="<?= "withdrawals/edit/" . $withdrawal->getId() ?>" class="btn btn-success" title="Editar">
                 <i class="bi bi-pencil-square"></i>
               </a>      
               <a href="#" class="btn btn-danger" title="Eliminar">
