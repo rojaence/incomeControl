@@ -60,6 +60,15 @@ class WithdrawalService extends BaseService
     $query->execute();
   }
 
+  public function idExists($id) {
+    $query = $this->dbConnection->prepare("SELECT COUNT(*) AS count_exists FROM withdrawal WHERE id = :id LIMIT 1;
+    ");
+    $query->bindValue(':id', $id, \PDO::PARAM_INT);
+    $query->execute();
+    $count = $query->fetchColumn();
+    return $count > 0;
+  }
+
   public function validateWithdrawalData($data) {
     if (!$data instanceof WithdrawalModel) {
       throw new DataTypeException('Se esperaba una instancia de WithdrawalModel');

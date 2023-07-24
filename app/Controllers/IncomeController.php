@@ -7,6 +7,7 @@ use App\Services\IncomeService;
 use App\Services\PaymentMethodService;
 use App\Services\TransactionTypeService;
 use App\Exceptions\DataTypeException;
+use App\Exceptions\IdNotFoundException;
 use Utils\ToastTrait;
 use Constants\ToastType;
 use Utils\TemplateRenderer;
@@ -114,7 +115,7 @@ class IncomeController extends BaseController
     try {
       $this->incomeService->delete($id);
       $response = array('deleted' => true);
-    } catch (\PDOException $e){
+    } catch (IdNotFoundException $e){
       $response = array('deleted' => false);
     }
     echo json_encode($response);

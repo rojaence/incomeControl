@@ -3,6 +3,7 @@
 namespace App\Services;
 use App\Models\IncomeModel;
 use App\Exceptions\DataTypeException;
+use App\Exceptions\IdNotFoundException;
 use InvalidArgumentException;
 
 class IncomeService extends BaseService
@@ -55,9 +56,21 @@ class IncomeService extends BaseService
 
   public function delete(int $id)
   {
+    if (!$this->idExists($id)) {
+      throw new IdNotFoundException("ID {$id} does not exist");
+    }
     $query = $this->dbConnection->prepare("DELETE FROM income WHERE id = :id");
     $query->bindParam(':id', $id, \PDO::PARAM_INT);
     $query->execute();
+  }
+
+  public function idExists($id) {
+    $query = $this->dbConnection->prepare("SELECT COUNT(*) AS count_exists FROM income WHERE id = :id LIMIT 1;
+    ");
+    $query->bindValue(':id', $id, \PDO::PARAM_INT);
+    $query->execute();
+    $count = $query->fetchColumn();
+    return $count > 0;
   }
 
   public function validateIncomeData($data) {

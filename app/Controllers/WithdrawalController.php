@@ -7,6 +7,7 @@ use App\Services\WithdrawalService;
 use App\Services\PaymentMethodService;
 use App\Services\TransactionTypeService;
 use App\Exceptions\DataTypeException;
+use App\Exceptions\IdNotFoundException;
 use Utils\ToastTrait;
 use Constants\ToastType;
 use Utils\TemplateRenderer;
@@ -80,12 +81,12 @@ class WithdrawalController extends BaseController
       "transactionTypes" => $transactionTypes]);
   }
 
-  public function destroy($id)
+  public function destroy($id) 
   {
     try {
       $this->withdrawalService->delete($id);
       $response = array('deleted' => true);
-    } catch (\PDOException $e){
+    } catch (IdNotFoundException $e){
       $response = array('deleted' => false);
     }
     echo json_encode($response);
