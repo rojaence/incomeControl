@@ -43,4 +43,8 @@
     </tbody>
   </table>
 
+  <?php if (isset($toast)): ?>
+    <?php $this->insert('partials::toast', ["toast" => $toast]) ?>
+  <?php endif; ?>
+
 <?php $this->end(); ?>
