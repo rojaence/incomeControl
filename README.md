@@ -55,3 +55,8 @@ DB_PASS_TEST=password
 ```
 php assets/testDataScript.php
 ```
+
+**Nota importante:** Para ejecutar los tests que requieren el webdriver, se necesita tener instalado en el sistema uno de ellos (puede buscar en la web como instalar el que prefiera, teniendo en cuanta que debe estar instalado tambień el navegador del mismo): 
+- chromedriver (Google Chrome)
+- msedgedriver (Microsoft Edge)
+- geckodriver (Mozilla Firefox)
